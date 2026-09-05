@@ -17,7 +17,6 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Gallery from "@/components/Gallery";
 
 const events = [
   {
@@ -53,7 +52,7 @@ const teamMembers = [
     initials: "ZA",
   },
   {
-    name: "Suhail Akram Rayeen",
+    name: "Sohail Ahram Rayeen",
     role: "Senior Vice President",
     initials: "SA",
   },
@@ -69,7 +68,7 @@ const teamMembers = [
   },
   {
     name: "Mohd Imran Rayeen",
-    role: "Organizing Secretary",
+    role: "Organizing",
     initials: "MI",
   },
 ];
@@ -210,7 +209,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* EVENTS */}
+        {/* FEATURED EVENTS */}
         <section id="events" className="bg-[#f8f7f1]">
           <div className="container py-24 sm:py-28">
             <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
@@ -236,10 +235,10 @@ export default function Home() {
               </motion.div>
 
               <a
-                href="#contact"
+                href="/events"
                 className="inline-flex w-fit items-center gap-2 rounded-full border border-[#056839]/20 bg-white px-5 py-3 text-sm font-bold text-[#056839] transition hover:bg-[#056839] hover:text-white"
               >
-                Share an Event
+                View All Events
                 <ArrowRight size={16} />
               </a>
             </div>
@@ -263,14 +262,9 @@ export default function Home() {
                       sizes="(max-width: 1024px) 100vw, 33vw"
                       className="object-cover transition duration-700 group-hover:scale-105"
                     />
-
                     <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-
                     <div className="absolute left-5 top-5 flex h-16 w-16 flex-col items-center justify-center rounded-2xl bg-white text-[#15231c] shadow-lg">
-                      <span className="text-xl font-bold leading-none">
-                        {event.date}
-                      </span>
-
+                      <span className="text-xl font-bold leading-none">{event.date}</span>
                       <span className="mt-1 text-[9px] font-bold tracking-[0.18em] text-[#056839]">
                         {event.month}
                       </span>
@@ -281,16 +275,14 @@ export default function Home() {
                     <h3 className="text-xl font-semibold text-[#15231c]">
                       {event.title}
                     </h3>
-
                     <p className="mt-3 text-sm leading-7 text-[#66746c]">
                       {event.description}
                     </p>
-
                     <a
-                      href="#contact"
+                      href="/events"
                       className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#056839]"
                     >
-                      Learn more
+                      View event
                       <ArrowRight
                         size={15}
                         className="transition-transform group-hover:translate-x-1"
@@ -303,8 +295,69 @@ export default function Home() {
           </div>
         </section>
 
-        {/* GALLERY */}
-        <Gallery />
+        {/* FEATURED GALLERY */}
+        <section id="gallery" className="bg-white">
+          <div className="container py-24 sm:py-28">
+            <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+                className="max-w-2xl"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
+                  Gallery
+                </p>
+                <h2 className="mt-4 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
+                  Moments from our community.
+                </h2>
+                <p className="mt-5 text-base leading-8 text-[#66746c] sm:text-lg">
+                  Explore a selection of moments, gatherings and memories from
+                  the AIJR community.
+                </p>
+              </motion.div>
+
+              <a
+                href="/gallery"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#056839]/20 bg-[#f8f7f1] px-5 py-3 text-sm font-bold text-[#056839] transition hover:bg-[#056839] hover:text-white"
+              >
+                View Full Gallery
+                <ArrowRight size={16} />
+              </a>
+            </div>
+
+            <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {[1, 2, 3, 4, 6, 7, 8, 9].map((image, index) => (
+                <motion.a
+                  key={image}
+                  href="/gallery"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  whileHover={{ y: -4 }}
+                  className={`group relative overflow-hidden rounded-[1.5rem] bg-[#034d2a] ${
+                    index === 0 ? "col-span-2 row-span-2 min-h-[260px] sm:min-h-[360px]" : "aspect-square"
+                  }`}
+                >
+                  <Image
+                    src={`/images/gallery/${image}.jpeg`}
+                    alt={`AIJR community moment ${image}`}
+                    fill
+                    sizes={
+                      index === 0
+                        ? "(max-width: 640px) 100vw, (max-width: 1024px) 66vw, 50vw"
+                        : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    }
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* RAYEEN SHADI */}
         <section className="relative overflow-hidden bg-[#056839] text-white">
@@ -430,7 +483,8 @@ export default function Home() {
 
                     <p className="mt-3 max-w-md text-sm leading-7 text-[#66746c]">
                       Your membership request has been submitted successfully.
-                      The AIJR team will review your request and contact you.
+                      The live email connection will be enabled once official AIJR
+                      contact credentials are available.
                     </p>
 
                     <button
@@ -449,73 +503,47 @@ export default function Home() {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-
                       setSubmitting(true);
                       setFormError("");
 
                       const form = e.currentTarget;
-
-                      // ============================================================
-                      // FRONTEND SHOWCASE MODE
-                      // This currently simulates a successful submission so the
-                      // website can be demonstrated before official email access
-                      // and contact details are available.
-                      //
-                      // BACKEND IS READY TO RECONNECT LATER:
-                      // 1. Keep the existing app/api/membership/route.ts file.
-                      // 2. Restore the FormData/payload code below.
-                      // 3. Restore the fetch("/api/membership", ...) request.
-                      // 4. Configure SMTP credentials in .env.local.
-                      // ============================================================
-
-                      /*
-                      const formData = new FormData(form);
-
-                      const payload = {
-                        name: String(formData.get("name") || ""),
-                        phone: String(formData.get("phone") || ""),
-                        email: String(formData.get("email") || ""),
-                        city: String(formData.get("city") || ""),
-                        message: String(formData.get("message") || ""),
-                      };
-
-                      try {
-                        const response = await fetch("/api/membership", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(payload),
-                        });
-
-                        const data = await response.json();
-
-                        if (!response.ok || !data.success) {
-                          throw new Error(
-                            data.message || "Submission failed."
-                          );
-                        }
-
-                        setSubmitted(true);
-                        form.reset();
-                      } catch (error) {
-                        console.error("Membership form error:", error);
-
-                        setFormError(
-                          error instanceof Error
-                            ? error.message
-                            : "Something went wrong. Please try again."
-                        );
-                      } finally {
-                        setSubmitting(false);
-                      }
-                      */
-
                       setTimeout(() => {
                         setSubmitting(false);
                         setSubmitted(true);
                         form.reset();
                       }, 900);
+
+                      /*
+                       * ================================================
+                       * REAL BACKEND — RECONNECT WHEN AIJR CREDENTIALS
+                       * ARE AVAILABLE
+                       * ================================================
+                       * Replace the demo setTimeout above with this flow:
+                       *
+                       * const formData = new FormData(form);
+                       * const payload = {
+                       *   name: String(formData.get("name") || ""),
+                       *   phone: String(formData.get("phone") || ""),
+                       *   email: String(formData.get("email") || ""),
+                       *   city: String(formData.get("city") || ""),
+                       *   message: String(formData.get("message") || ""),
+                       * };
+                       *
+                       * const response = await fetch("/api/membership", {
+                       *   method: "POST",
+                       *   headers: { "Content-Type": "application/json" },
+                       *   body: JSON.stringify(payload),
+                       * });
+                       *
+                       * const data = await response.json();
+                       * if (!response.ok || !data.success) {
+                       *   throw new Error(data.message || "Submission failed.");
+                       * }
+                       * setSubmitted(true);
+                       * form.reset();
+                       *
+                       * ================================================
+                       */
                     }}
                     className="space-y-5"
                   >
@@ -740,8 +768,9 @@ export default function Home() {
                     </h3>
 
                     <p className="mt-3 max-w-md text-sm leading-7 text-[#66746c]">
-                      Thank you for contacting AIJR. Your message has been submitted
-                      successfully. The AIJR team will get back to you soon.
+                      Thank you for contacting AIJR. Your message has been
+                      submitted successfully. The live email connection will be
+                      enabled once official AIJR contact credentials are available.
                     </p>
 
                     <button
@@ -760,70 +789,46 @@ export default function Home() {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-
                       setContactSubmitting(true);
                       setContactError("");
 
                       const form = e.currentTarget;
-
-                      // ============================================================
-                      // FRONTEND SHOWCASE MODE
-                      // This currently simulates a successful message submission.
-                      //
-                      // BACKEND IS READY TO RECONNECT LATER:
-                      // 1. Keep the existing app/api/contact/route.ts file.
-                      // 2. Restore the FormData/payload code below.
-                      // 3. Restore the fetch("/api/contact", ...) request.
-                      // 4. Configure SMTP credentials in .env.local.
-                      // ============================================================
-
-                      /*
-                      const formData = new FormData(form);
-
-                      const payload = {
-                        name: String(formData.get("name") || ""),
-                        email: String(formData.get("email") || ""),
-                        subject: String(formData.get("subject") || ""),
-                        message: String(formData.get("message") || ""),
-                      };
-
-                      try {
-                        const response = await fetch("/api/contact", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(payload),
-                        });
-
-                        const data = await response.json();
-
-                        if (!response.ok || !data.success) {
-                          throw new Error(
-                            data.message || "Message could not be sent."
-                          );
-                        }
-
-                        setContactSent(true);
-                        form.reset();
-                      } catch (error) {
-                        console.error("Contact form error:", error);
-
-                        setContactError(
-                          error instanceof Error
-                            ? error.message
-                            : "Something went wrong. Please try again."
-                        );
-                      } finally {
-                        setContactSubmitting(false);
-                      }
-                      */
-
                       setTimeout(() => {
                         setContactSubmitting(false);
                         setContactSent(true);
                         form.reset();
                       }, 900);
+
+                      /*
+                       * ================================================
+                       * REAL BACKEND — RECONNECT WHEN AIJR CREDENTIALS
+                       * ARE AVAILABLE
+                       * ================================================
+                       * Replace the demo setTimeout above with this flow:
+                       *
+                       * const formData = new FormData(form);
+                       * const payload = {
+                       *   name: String(formData.get("name") || ""),
+                       *   email: String(formData.get("email") || ""),
+                       *   subject: String(formData.get("subject") || ""),
+                       *   message: String(formData.get("message") || ""),
+                       * };
+                       *
+                       * const response = await fetch("/api/contact", {
+                       *   method: "POST",
+                       *   headers: { "Content-Type": "application/json" },
+                       *   body: JSON.stringify(payload),
+                       * });
+                       *
+                       * const data = await response.json();
+                       * if (!response.ok || !data.success) {
+                       *   throw new Error(data.message || "Message could not be sent.");
+                       * }
+                       * setContactSent(true);
+                       * form.reset();
+                       *
+                       * ================================================
+                       */
                     }}
                     className="space-y-5"
                   >
@@ -957,8 +962,8 @@ export default function Home() {
                 { label: "Home", href: "#home" },
                 { label: "About", href: "#about" },
                 { label: "Team", href: "#team" },
-                { label: "Events", href: "#events" },
-                { label: "Gallery", href: "#gallery" },
+                { label: "Events", href: "/events" },
+                { label: "Gallery", href: "/gallery" },
                 { label: "Contact", href: "#contact" },
               ].map((item) => (
                 <a
