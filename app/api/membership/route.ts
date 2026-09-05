@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 
 type MembershipPayload = {
   name?: string;
+  fatherName?: string;
   phone?: string;
   email?: string;
   city?: string;
@@ -35,16 +36,17 @@ export async function POST(request: Request) {
     const body = (await request.json()) as MembershipPayload;
 
     const name = body.name?.trim();
+    const fatherName = body.fatherName?.trim();
     const phone = body.phone?.trim();
     const email = body.email?.trim();
     const city = body.city?.trim() || "Not provided";
     const message = body.message?.trim() || "No message provided";
 
-    if (!name || !phone || !email) {
+    if (!name || !fatherName || !phone || !email) {
       return NextResponse.json(
         {
           success: false,
-          message: "Name, phone and email are required.",
+          message: "Name, father's name, phone and email are required.",
         },
         { status: 400 }
       );
@@ -69,6 +71,7 @@ export async function POST(request: Request) {
 A new membership request has been submitted on the AIJR website.
 
 Name: ${name}
+Father's Name: ${fatherName}
 Phone: ${phone}
 Email: ${email}
 City: ${city}

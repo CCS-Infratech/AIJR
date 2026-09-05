@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowLeft, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -77,13 +78,13 @@ export default function GalleryPage() {
               ))}
             </div>
 
-            <a
+            <Link
               href="/"
               className="mt-10 inline-flex items-center gap-2 text-sm font-bold text-[#056839]"
             >
               <ArrowLeft size={16} />
               Back to Home
-            </a>
+            </Link>
           </div>
         </section>
       </main>
@@ -141,18 +142,18 @@ export default function GalleryPage() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <a href="/" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              <Link href="/" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Home
-              </a>
-              <a href="/events" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              </Link>
+              <Link href="/events" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Events
-              </a>
-              <a href="/gallery" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              </Link>
+              <Link href="/gallery" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Gallery
-              </a>
-              <a href="/#contact" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              </Link>
+              <Link href="/#contact" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Contact
-              </a>
+              </Link>
             </div>
           </div>
 

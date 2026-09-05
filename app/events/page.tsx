@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -129,23 +130,23 @@ export default function EventsPage() {
                     the contact form.
                   </p>
                 </div>
-                <a
+                <Link
                   href="/#contact"
                   className="inline-flex w-fit items-center gap-2 rounded-full bg-[#056839] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#034d2a]"
                 >
                   Share an Event
                   <ArrowRight size={16} />
-                </a>
+                </Link>
               </div>
             </div>
 
-            <a
+            <Link
               href="/"
               className="mt-10 inline-flex items-center gap-2 text-sm font-bold text-[#056839]"
             >
               <ArrowLeft size={16} />
               Back to Home
-            </a>
+            </Link>
           </div>
         </section>
       </main>
@@ -164,18 +165,18 @@ export default function EventsPage() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <a href="/" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              <Link href="/" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Home
-              </a>
-              <a href="/events" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              </Link>
+              <Link href="/events" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Events
-              </a>
-              <a href="/gallery" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              </Link>
+              <Link href="/gallery" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Gallery
-              </a>
-              <a href="/#contact" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
+              </Link>
+              <Link href="/#contact" className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white">
                 Contact
-              </a>
+              </Link>
             </div>
           </div>
 

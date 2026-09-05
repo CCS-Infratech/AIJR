@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -27,7 +28,7 @@ export default function Navbar() {
       <div className="container px-0 pt-3 sm:pt-4">
         <div className="flex h-16 items-center justify-between rounded-2xl border border-white/15 bg-[#056839]/90 px-3.5 text-white shadow-2xl shadow-[#034d2a]/20 backdrop-blur-xl sm:h-[74px] sm:px-6">
           {/* Logo / Brand */}
-          <a
+          <Link
             href="/"
             className="flex min-w-0 items-center gap-2.5 sm:gap-3"
           >
@@ -50,26 +51,26 @@ export default function Navbar() {
                 Unity • Community • Progress
               </p>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden items-center gap-1 lg:flex">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className="rounded-xl px-3.5 py-2.5 text-sm text-white/75 transition hover:bg-white/10 hover:text-white"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
 
-            <a
+            <Link
               href="/#membership"
               className="ml-3 rounded-full bg-[#d7b765] px-5 py-3 text-sm font-bold text-[#15231c] transition hover:bg-[#ead493]"
             >
               Become a Member
-            </a>
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -93,23 +94,23 @@ export default function Navbar() {
             className="mt-2 rounded-2xl border border-white/10 bg-[#056839]/98 p-2.5 text-white shadow-2xl backdrop-blur-xl lg:hidden"
           >
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className="block rounded-xl px-4 py-3.5 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
 
-            <a
+            <Link
               href="/#membership"
               onClick={() => setOpen(false)}
               className="mt-2 block rounded-xl bg-[#d7b765] px-4 py-3.5 text-center text-sm font-bold text-[#15231c]"
             >
               Become a Member
-            </a>
+            </Link>
           </motion.div>
         )}
       </div>

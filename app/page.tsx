@@ -49,27 +49,27 @@ const teamMembers = [
   {
     name: "Zeeshan Aslam Rayeen",
     role: "President",
-    initials: "ZA",
+    image: "/images/team/zeesha_aslam_rayeen.jpg",
   },
   {
     name: "Suhail Akram Rayeen",
     role: "Senior Vice President",
-    initials: "SA",
+    image: "/images/team/suhain_akram_rayeen.jpeg",
   },
   {
     name: "Faisal Aslam Rayeen",
     role: "Vice President",
-    initials: "FA",
+    image: "/images/team/faisal_aslam_rayeen.jpeg",
   },
   {
     name: "Mohd Shariq Rayeen",
     role: "General Secretary",
-    initials: "MS",
+    image: "/images/team/mohd_shariq_rayeen.jpeg",
   },
   {
     name: "Mohd Imran Rayeen",
     role: "Organizing Secretary",
-    initials: "MI",
+    image: "/images/team/mohd_imran_rayeen.jpeg",
   },
 ];
 
@@ -186,12 +186,14 @@ export default function Home() {
                   whileHover={{ y: -7 }}
                   className="group overflow-hidden rounded-[2rem] border border-[#e3e4dc] bg-[#f8f7f1] p-6 transition-shadow duration-300 hover:shadow-xl"
                 >
-                  <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[1.5rem] bg-[#056839]">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.15),transparent_28%),radial-gradient(circle_at_80%_75%,rgba(215,183,101,0.18),transparent_30%)]" />
-
-                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-[#d7b765]/50 bg-white/10 text-4xl font-bold text-[#ead493] backdrop-blur-md sm:h-28 sm:w-28">
-                      {member.initials}
-                    </div>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-[#056839]">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-top transition duration-700 group-hover:scale-105"
+                    />
                   </div>
 
                   <div className="pt-6">
@@ -523,6 +525,7 @@ export default function Home() {
                        * const formData = new FormData(form);
                        * const payload = {
                        *   name: String(formData.get("name") || ""),
+                       *   fatherName: String(formData.get("fatherName") || ""),
                        *   phone: String(formData.get("phone") || ""),
                        *   email: String(formData.get("email") || ""),
                        *   city: String(formData.get("city") || ""),
@@ -579,6 +582,27 @@ export default function Home() {
 
                       <div>
                         <label
+                          htmlFor="membership-father-name"
+                          className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                        >
+                          Father&apos;s Name
+                        </label>
+
+                        <input
+                          id="membership-father-name"
+                          required
+                          type="text"
+                          name="fatherName"
+                          autoComplete="off"
+                          placeholder="Your father's name"
+                          className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <label
                           htmlFor="membership-phone"
                           className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
                         >
@@ -596,25 +620,25 @@ export default function Home() {
                           className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                         />
                       </div>
-                    </div>
 
-                    <div>
-                      <label
-                        htmlFor="membership-email"
-                        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
-                      >
-                        Email
-                      </label>
+                      <div>
+                        <label
+                          htmlFor="membership-email"
+                          className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                        >
+                          Email
+                        </label>
 
-                      <input
-                        id="membership-email"
-                        required
-                        type="email"
-                        name="email"
-                        autoComplete="email"
-                        placeholder="you@example.com"
-                        className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
-                      />
+                        <input
+                          id="membership-email"
+                          required
+                          type="email"
+                          name="email"
+                          autoComplete="email"
+                          placeholder="you@example.com"
+                          className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
+                        />
+                      </div>
                     </div>
 
                     <div>
