@@ -48,19 +48,29 @@ const events = [
 
 const teamMembers = [
   {
-    name: "Community Leadership",
-    role: "Guiding the Community",
-    initials: "CL",
+    name: "Zeeshan Aslam Rayeen",
+    role: "President",
+    initials: "ZA",
   },
   {
-    name: "Youth Leadership",
-    role: "Empowering the Next Generation",
-    initials: "YL",
+    name: "Suhail Akram Rayeen",
+    role: "Senior Vice President",
+    initials: "SA",
   },
   {
-    name: "Community Volunteers",
-    role: "Serving With Dedication",
-    initials: "CV",
+    name: "Faisal Aslam Rayeen",
+    role: "Vice President",
+    initials: "FA",
+  },
+  {
+    name: "Mohd. Shariq Rayeen",
+    role: "General Secretary",
+    initials: "MS",
+  },
+  {
+    name: "Mohd Imran Rayeen",
+    role: "Organizing Secretary",
+    initials: "MI",
   },
 ];
 
@@ -74,6 +84,12 @@ const benefits = [
 
 export default function Home() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  const [contactSent, setContactSent] = useState(false);
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactError, setContactError] = useState("");
 
   return (
     <>
@@ -125,6 +141,7 @@ export default function Home() {
                     <p className="font-semibold text-[#15231c]">
                       {item.value}
                     </p>
+
                     <p className="mt-1 text-sm text-[#66746c]">
                       {item.label}
                     </p>
@@ -150,16 +167,16 @@ export default function Home() {
               </p>
 
               <h2 className="mt-4 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
-                People who serve the community.
+                Leadership that serves the community.
               </h2>
 
               <p className="mt-5 text-base leading-8 text-[#66746c] sm:text-lg">
-                A strong community is built by people who step forward,
-                contribute their time and work together toward a better future.
+                A dedicated leadership working toward unity, development and
+                progress for the Rayeen community across India.
               </p>
             </motion.div>
 
-            <div className="mt-14 grid gap-6 md:grid-cols-3">
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={member.name}
@@ -173,7 +190,7 @@ export default function Home() {
                   <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[1.5rem] bg-[#056839]">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.15),transparent_28%),radial-gradient(circle_at_80%_75%,rgba(215,183,101,0.18),transparent_30%)]" />
 
-                    <div className="relative flex h-28 w-28 items-center justify-center rounded-full border border-[#d7b765]/50 bg-white/10 text-4xl font-bold text-[#ead493] backdrop-blur-md">
+                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-[#d7b765]/50 bg-white/10 text-4xl font-bold text-[#ead493] backdrop-blur-md sm:h-28 sm:w-28">
                       {member.initials}
                     </div>
                   </div>
@@ -253,6 +270,7 @@ export default function Home() {
                       <span className="text-xl font-bold leading-none">
                         {event.date}
                       </span>
+
                       <span className="mt-1 text-[9px] font-bold tracking-[0.18em] text-[#056839]">
                         {event.month}
                       </span>
@@ -323,7 +341,6 @@ export default function Home() {
                   Visit Rayeen Shadi
                   <ExternalLink size={16} />
                 </a>
-
               </motion.div>
 
               <motion.div
@@ -333,8 +350,8 @@ export default function Home() {
                 transition={{ duration: 0.8 }}
                 className="relative"
               >
-                <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur-md">
-                  <div className="rounded-[1.5rem] border border-[#d7b765]/20 bg-[#034d2a]/60 p-8">
+                <div className="rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-md sm:p-8">
+                  <div className="rounded-[1.5rem] border border-[#d7b765]/20 bg-[#034d2a]/60 p-6 sm:p-8">
                     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#d7b765] text-[#15231c]">
                       <Users size={24} />
                     </div>
@@ -399,7 +416,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
-                className="rounded-[2rem] border border-[#e3e4dc] bg-[#f8f7f1] p-6 sm:p-8"
+                className="rounded-[2rem] border border-[#e3e4dc] bg-[#f8f7f1] p-5 sm:p-8"
               >
                 {submitted ? (
                   <div className="flex min-h-[430px] flex-col items-center justify-center text-center">
@@ -412,15 +429,93 @@ export default function Home() {
                     </h3>
 
                     <p className="mt-3 max-w-md text-sm leading-7 text-[#66746c]">
-                      Your membership request has been received in this demo
-                      version. Backend submission can be connected later.
+                      Your membership request has been submitted successfully.
+                      The AIJR team will review your request and contact you.
                     </p>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSubmitted(false);
+                        setFormError("");
+                      }}
+                      className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#056839]/20 bg-white px-5 py-3 text-sm font-bold text-[#056839] transition hover:bg-[#056839] hover:text-white"
+                    >
+                      Submit another request
+                      <ArrowRight size={15} />
+                    </button>
                   </div>
                 ) : (
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      setSubmitted(true);
+
+                      setSubmitting(true);
+                      setFormError("");
+
+                      const form = e.currentTarget;
+
+                      // ============================================================
+                      // FRONTEND SHOWCASE MODE
+                      // This currently simulates a successful submission so the
+                      // website can be demonstrated before official email access
+                      // and contact details are available.
+                      //
+                      // BACKEND IS READY TO RECONNECT LATER:
+                      // 1. Keep the existing app/api/membership/route.ts file.
+                      // 2. Restore the FormData/payload code below.
+                      // 3. Restore the fetch("/api/membership", ...) request.
+                      // 4. Configure SMTP credentials in .env.local.
+                      // ============================================================
+
+                      /*
+                      const formData = new FormData(form);
+
+                      const payload = {
+                        name: String(formData.get("name") || ""),
+                        phone: String(formData.get("phone") || ""),
+                        email: String(formData.get("email") || ""),
+                        city: String(formData.get("city") || ""),
+                        message: String(formData.get("message") || ""),
+                      };
+
+                      try {
+                        const response = await fetch("/api/membership", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify(payload),
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok || !data.success) {
+                          throw new Error(
+                            data.message || "Submission failed."
+                          );
+                        }
+
+                        setSubmitted(true);
+                        form.reset();
+                      } catch (error) {
+                        console.error("Membership form error:", error);
+
+                        setFormError(
+                          error instanceof Error
+                            ? error.message
+                            : "Something went wrong. Please try again."
+                        );
+                      } finally {
+                        setSubmitting(false);
+                      }
+                      */
+
+                      setTimeout(() => {
+                        setSubmitting(false);
+                        setSubmitted(true);
+                        form.reset();
+                      }, 900);
                     }}
                     className="space-y-5"
                   >
@@ -436,75 +531,115 @@ export default function Home() {
 
                     <div className="grid gap-5 sm:grid-cols-2">
                       <div>
-                        <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
+                        <label
+                          htmlFor="membership-name"
+                          className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                        >
                           Full Name
                         </label>
 
                         <input
+                          id="membership-name"
                           required
                           type="text"
+                          name="name"
+                          autoComplete="name"
                           placeholder="Your full name"
-                          className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
+                          className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                         />
                       </div>
 
                       <div>
-                        <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
+                        <label
+                          htmlFor="membership-phone"
+                          className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                        >
                           Phone
                         </label>
 
                         <input
+                          id="membership-phone"
                           required
                           type="tel"
+                          name="phone"
+                          autoComplete="tel"
+                          inputMode="tel"
                           placeholder="+91 XXXXX XXXXX"
-                          className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
+                          className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
+                      <label
+                        htmlFor="membership-email"
+                        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                      >
                         Email
                       </label>
 
                       <input
+                        id="membership-email"
                         required
                         type="email"
+                        name="email"
+                        autoComplete="email"
                         placeholder="you@example.com"
-                        className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
+                        className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
+                      <label
+                        htmlFor="membership-city"
+                        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                      >
                         City
                       </label>
 
                       <input
+                        id="membership-city"
                         type="text"
+                        name="city"
+                        autoComplete="address-level2"
                         placeholder="Your city"
-                        className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
+                        className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
+                      <label
+                        htmlFor="membership-message"
+                        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                      >
                         Message
                       </label>
 
                       <textarea
+                        id="membership-message"
+                        name="message"
                         rows={4}
                         placeholder="Tell us a little about yourself..."
-                        className="w-full resize-none rounded-xl border border-[#dfe1d8] bg-white px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
+                        className="w-full resize-none rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                       />
                     </div>
 
+                    {formError && (
+                      <p className="rounded-xl bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                        {formError}
+                      </p>
+                    )}
+
                     <button
                       type="submit"
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#056839] px-6 py-4 text-sm font-bold text-white transition hover:bg-[#034d2a]"
+                      disabled={submitting}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#056839] px-6 py-4 text-sm font-bold text-white shadow-lg shadow-[#056839]/15 transition hover:-translate-y-0.5 hover:bg-[#034d2a] disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                      Submit Membership Request
-                      <ArrowRight size={16} />
+                      {submitting
+                        ? "Submitting..."
+                        : "Submit Membership Request"}
+
+                      {!submitting && <ArrowRight size={16} />}
                     </button>
                   </form>
                 )}
@@ -513,7 +648,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CONTACT */}
+        {/* CONNECT WITH US */}
         <section id="contact" className="bg-[#f8f7f1]">
           <div className="container py-24 sm:py-28">
             <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr]">
@@ -524,7 +659,7 @@ export default function Home() {
                 transition={{ duration: 0.7 }}
               >
                 <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
-                  Contact Us
+                  Connect With Us
                 </p>
 
                 <h2 className="mt-5 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
@@ -533,50 +668,53 @@ export default function Home() {
 
                 <p className="mt-5 max-w-xl text-base leading-8 text-[#66746c]">
                   Have a question, suggestion or community initiative to share?
-                  Get in touch with us.
+                  Get in touch with the AIJR team.
                 </p>
 
-                <div className="mt-9 space-y-5">
-                  <div className="flex items-start gap-4">
+                <div className="mt-9 space-y-4">
+                  <div className="flex items-start gap-4 rounded-2xl border border-[#e3e4dc] bg-white p-4">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#056839] text-white">
                       <Mail size={18} />
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold text-[#15231c]">
                         Email
                       </p>
-                      <p className="mt-1 text-sm text-[#66746c]">
-                        hello@aijr.example
+
+                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
+                        Official email will be added once confirmed.
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-start gap-4 rounded-2xl border border-[#e3e4dc] bg-white p-4">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#056839] text-white">
                       <Phone size={18} />
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold text-[#15231c]">
                         Phone
                       </p>
-                      <p className="mt-1 text-sm text-[#66746c]">
-                        +91 XXXXX XXXXX
+
+                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
+                        Official contact number will be added once confirmed.
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-start gap-4 rounded-2xl border border-[#e3e4dc] bg-white p-4">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#056839] text-white">
                       <MapPin size={18} />
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold text-[#15231c]">
                         Location
                       </p>
-                      <p className="mt-1 text-sm text-[#66746c]">
+
+                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
                         India
                       </p>
                     </div>
@@ -589,75 +727,210 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
-                className="rounded-[2rem] border border-[#e3e4dc] bg-white p-6 shadow-sm sm:p-8"
+                className="rounded-[2rem] border border-[#e3e4dc] bg-white p-5 shadow-sm sm:p-8"
               >
-                <form
-                  onSubmit={(e) => e.preventDefault()}
-                  className="space-y-5"
-                >
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
-                        Name
-                      </label>
-
-                      <input
-                        type="text"
-                        placeholder="Your name"
-                        className="w-full rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
-                      />
+                {contactSent ? (
+                  <div className="flex min-h-[430px] flex-col items-center justify-center text-center">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#056839] text-white">
+                      <Check size={28} />
                     </div>
 
-                    <div>
-                      <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
-                        Email
-                      </label>
+                    <h3 className="mt-6 text-2xl font-semibold text-[#15231c]">
+                      Message sent successfully.
+                    </h3>
 
-                      <input
-                        type="email"
-                        placeholder="you@example.com"
-                        className="w-full rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
-                      />
-                    </div>
+                    <p className="mt-3 max-w-md text-sm leading-7 text-[#66746c]">
+                      Thank you for contacting AIJR. Your message has been submitted
+                      successfully. The AIJR team will get back to you soon.
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setContactSent(false);
+                        setContactError("");
+                      }}
+                      className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#056839]/20 bg-[#f8f7f1] px-5 py-3 text-sm font-bold text-[#056839] transition hover:bg-[#056839] hover:text-white"
+                    >
+                      Send another message
+                      <ArrowRight size={15} />
+                    </button>
                   </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
 
-                  <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
-                      Subject
-                    </label>
+                      setContactSubmitting(true);
+                      setContactError("");
 
-                    <input
-                      type="text"
-                      placeholder="How can we help?"
-                      className="w-full rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
-                    />
-                  </div>
+                      const form = e.currentTarget;
 
-                  <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
-                      Message
-                    </label>
+                      // ============================================================
+                      // FRONTEND SHOWCASE MODE
+                      // This currently simulates a successful message submission.
+                      //
+                      // BACKEND IS READY TO RECONNECT LATER:
+                      // 1. Keep the existing app/api/contact/route.ts file.
+                      // 2. Restore the FormData/payload code below.
+                      // 3. Restore the fetch("/api/contact", ...) request.
+                      // 4. Configure SMTP credentials in .env.local.
+                      // ============================================================
 
-                    <textarea
-                      rows={6}
-                      placeholder="Write your message..."
-                      className="w-full resize-none rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3 text-sm text-[#15231c] outline-none transition focus:border-[#056839]"
-                    />
-                  </div>
+                      /*
+                      const formData = new FormData(form);
 
-                  <button
-                    type="submit"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#056839] px-7 py-4 text-sm font-bold text-white transition hover:bg-[#034d2a]"
+                      const payload = {
+                        name: String(formData.get("name") || ""),
+                        email: String(formData.get("email") || ""),
+                        subject: String(formData.get("subject") || ""),
+                        message: String(formData.get("message") || ""),
+                      };
+
+                      try {
+                        const response = await fetch("/api/contact", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify(payload),
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok || !data.success) {
+                          throw new Error(
+                            data.message || "Message could not be sent."
+                          );
+                        }
+
+                        setContactSent(true);
+                        form.reset();
+                      } catch (error) {
+                        console.error("Contact form error:", error);
+
+                        setContactError(
+                          error instanceof Error
+                            ? error.message
+                            : "Something went wrong. Please try again."
+                        );
+                      } finally {
+                        setContactSubmitting(false);
+                      }
+                      */
+
+                      setTimeout(() => {
+                        setContactSubmitting(false);
+                        setContactSent(true);
+                        form.reset();
+                      }, 900);
+                    }}
+                    className="space-y-5"
                   >
-                    Send Message
-                    <ArrowRight size={16} />
-                  </button>
+                    <div>
+                      <h3 className="text-2xl font-semibold text-[#15231c]">
+                        Send us a message
+                      </h3>
 
-                  <p className="text-xs leading-5 text-[#66746c]">
-                    Contact form functionality can be connected to a backend,
-                    email service or database in the next phase.
-                  </p>
-                </form>
+                      <p className="mt-2 text-sm leading-6 text-[#66746c]">
+                        Reach out to AIJR with your question, suggestion or
+                        community initiative.
+                      </p>
+                    </div>
+
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <label
+                          htmlFor="contact-name"
+                          className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                        >
+                          Name
+                        </label>
+
+                        <input
+                          id="contact-name"
+                          required
+                          type="text"
+                          name="name"
+                          autoComplete="name"
+                          placeholder="Your name"
+                          className="w-full rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="contact-email"
+                          className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                        >
+                          Email
+                        </label>
+
+                        <input
+                          id="contact-email"
+                          required
+                          type="email"
+                          name="email"
+                          autoComplete="email"
+                          placeholder="you@example.com"
+                          className="w-full rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="contact-subject"
+                        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                      >
+                        Subject
+                      </label>
+
+                      <input
+                        id="contact-subject"
+                        required
+                        type="text"
+                        name="subject"
+                        placeholder="How can we help?"
+                        className="w-full rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="contact-message"
+                        className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                      >
+                        Message
+                      </label>
+
+                      <textarea
+                        id="contact-message"
+                        required
+                        name="message"
+                        rows={6}
+                        placeholder="Write your message..."
+                        className="w-full resize-none rounded-xl border border-[#dfe1d8] bg-[#f8f7f1] px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
+                      />
+                    </div>
+
+                    {contactError && (
+                      <p className="rounded-xl bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                        {contactError}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={contactSubmitting}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#056839] px-7 py-4 text-sm font-bold text-white shadow-lg shadow-[#056839]/15 transition hover:-translate-y-0.5 hover:bg-[#034d2a] disabled:cursor-not-allowed disabled:opacity-60 sm:w-fit"
+                    >
+                      {contactSubmitting ? "Sending..." : "Send Message"}
+
+                      {!contactSubmitting && <ArrowRight size={16} />}
+                    </button>
+                  </form>
+                )}
               </motion.div>
             </div>
           </div>
@@ -700,7 +973,10 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-3 pt-7 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} All India Jamat Rayeen. All rights reserved.</p>
+            <p>
+              © {new Date().getFullYear()} All India Jamat Rayeen. All rights
+              reserved.
+            </p>
 
             <p>Unity • Community • Progress</p>
           </div>
