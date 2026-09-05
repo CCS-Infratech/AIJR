@@ -52,7 +52,7 @@ const teamMembers = [
     initials: "ZA",
   },
   {
-    name: "Sohail Ahram Rayeen",
+    name: "Suhail Akram Rayeen",
     role: "Senior Vice President",
     initials: "SA",
   },
@@ -62,13 +62,13 @@ const teamMembers = [
     initials: "FA",
   },
   {
-    name: "Mohd. Shariq Rayeen",
+    name: "Mohd Shariq Rayeen",
     role: "General Secretary",
     initials: "MS",
   },
   {
     name: "Mohd Imran Rayeen",
-    role: "Organizing",
+    role: "Organizing Secretary",
     initials: "MI",
   },
 ];
@@ -622,13 +622,13 @@ export default function Home() {
                         htmlFor="membership-city"
                         className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
                       >
-                        City
+                        Address
                       </label>
 
                       <input
                         id="membership-city"
                         type="text"
-                        name="city"
+                        name="Address"
                         autoComplete="address-level2"
                         placeholder="Your city"
                         className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
