@@ -919,9 +919,12 @@ export default function Home() {
                         Email
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
-                        Official email will be added once confirmed.
-                      </p>
+                      <a
+                        href="mailto:allindiajamiatrayeen@yahoo.com"
+                        className="mt-1 block text-sm leading-6 text-[#66746c] transition hover:text-[#056839]"
+                      >
+                        allindiajamiatrayeen@yahoo.com
+                      </a>
                     </div>
                   </div>
 
@@ -935,9 +938,12 @@ export default function Home() {
                         Phone
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
-                        Official contact number will be added once confirmed.
-                      </p>
+                      <a
+                        href="tel:+919919990421"
+                        className="mt-1 block text-sm leading-6 text-[#66746c] transition hover:text-[#056839]"
+                      >
+                        +91 99199 90421
+                      </a>
                     </div>
                   </div>
 
