@@ -979,6 +979,42 @@ export default function Home() {
                 Connecting families, empowering individuals and building a
                 stronger community together.
               </p>
+
+              <div className="mt-5 flex items-center gap-3">
+                <a
+                  href="https://www.facebook.com/share/1DfVWVoZgv/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow All India Jamiat Rayeen on Facebook"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/75 transition hover:border-[#d7b765] hover:bg-[#d7b765] hover:text-[#15231c]"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className="h-4 w-4 fill-current"
+                  >
+                    <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.6 1.7-1.6H17V3.8c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V10H7v3h3v8h3.5Z" />
+                  </svg>
+                </a>
+
+                <a
+                  href="https://www.instagram.com/allindiajamiatrayeen?stkn=MTM3bTA1bm1oZDN2Nw=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow All India Jamiat Rayeen on Instagram"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/75 transition hover:border-[#d7b765] hover:bg-[#d7b765] hover:text-[#15231c]"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className="h-4 w-4 fill-none stroke-current stroke-[1.8]"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" className="fill-current stroke-none" />
+                  </svg>
+                </a>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-2">
