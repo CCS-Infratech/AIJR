@@ -1,24 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Check, Sparkles } from "lucide-react";
+import { ArrowUpRight, BookOpen, HeartHandshake, Sparkles, TrendingUp, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
 const values = [
   {
     number: "01",
     title: "Community",
-    text: "Creating meaningful connections between families and individuals.",
+    text: "Creating meaningful connections between families and individuals across India.",
+    icon: Users,
   },
   {
     number: "02",
-    title: "Unity",
-    text: "Bringing people together through shared identity and values.",
+    title: "Education",
+    text: "Encouraging learning, awareness and opportunities for young people.",
+    icon: BookOpen,
   },
   {
     number: "03",
-    title: "Opportunity",
-    text: "Creating platforms that encourage growth and collaboration.",
+    title: "Social Welfare",
+    text: "Supporting initiatives that strengthen families and communities.",
+    icon: HeartHandshake,
+  },
+  {
+    number: "04",
+    title: "Progress",
+    text: "Encouraging collective growth, opportunity and a stronger future.",
+    icon: TrendingUp,
   },
 ];
 
@@ -96,16 +105,15 @@ export default function About() {
             </h2>
 
             <p className="section-description">
-              All India Jamat Rayeen is built around the vision of creating
-              stronger connections within the Rayeen community while supporting
-              collective growth and positive progress.
+              All India Jamiat Rayeen (AIJR) is a community-focused organization
+              working toward the social, educational, cultural and economic
+              development of the Rayeen community in India.
             </p>
 
             <p className="mt-5 max-w-2xl text-base leading-8 text-[#66746c]">
-              Through community initiatives, events and meaningful
-              connections, AIJR aims to provide a platform where individuals
-              and families can come together, share opportunities and build a
-              stronger future.
+              Through community initiatives, events and meaningful connections,
+              AIJR creates space for individuals and families to come together,
+              share opportunities and build a stronger future.
             </p>
 
             <a
@@ -138,7 +146,7 @@ export default function About() {
             </h3>
           </motion.div>
 
-          <div className="mt-9 grid gap-5 md:grid-cols-3">
+          <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value, index) => (
               <motion.div
                 key={value.number}
@@ -152,15 +160,21 @@ export default function About() {
                 whileHover={{ y: -7 }}
                 className="group rounded-3xl border border-[#e3e4dc] bg-white p-7 transition-shadow hover:shadow-xl hover:shadow-[#056839]/5"
               >
+                {(() => {
+                  const Icon = value.icon;
+
+                  return (
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-bold text-[#d7b765]">
                     {value.number}
                   </span>
 
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#056839]/5 text-[#056839] transition group-hover:bg-[#056839] group-hover:text-white">
-                    <Check size={16} />
+                    <Icon size={16} />
                   </div>
                 </div>
+                  );
+                })()}
 
                 <h4 className="mt-8 text-2xl font-semibold">
                   {value.title}

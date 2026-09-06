@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowDown, ArrowRight, Play } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Hero() {
@@ -150,21 +150,12 @@ export default function Hero() {
               {/* Dark gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
 
-              {/* Top image controls */}
-              <div className="absolute left-4 right-4 top-4 flex items-center justify-between sm:left-6 sm:right-6 sm:top-6">
+              {/* Image label */}
+              <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
                 {/* AIJR badge */}
                 <div className="rounded-full border border-white/15 bg-black/20 px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] backdrop-blur-md sm:px-4 sm:py-2 sm:text-[10px]">
                   AIJR
                 </div>
-
-                {/* Play button */}
-                <button
-                  type="button"
-                  aria-label="Play community video"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-md transition hover:bg-white/20 sm:h-12 sm:w-12"
-                >
-                  <Play size={14} fill="currentColor" />
-                </button>
               </div>
 
               {/* Image caption */}
@@ -183,26 +174,6 @@ export default function Hero() {
                 </p>
               </div>
             </div>
-
-            {/* Floating "Built together" card
-                Hidden on mobile to prevent clipping/overflow */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute -bottom-4 left-2 hidden rounded-2xl border border-white/15 bg-[#034d2a]/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-bottom-5 sm:left-5 sm:block sm:px-5 sm:py-4 lg:block"
-            >
-              <p className="text-[10px] uppercase tracking-[0.18em] text-white/50">
-                Built together
-              </p>
-
-              <p className="mt-1 text-sm font-semibold text-[#ead493]">
-                One community. One vision.
-              </p>
-            </motion.div>
           </motion.div>
         </div>
       </div>

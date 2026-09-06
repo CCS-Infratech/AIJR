@@ -10,7 +10,15 @@ import {
   Phone,
   Users,
   CalendarDays,
+  BriefcaseBusiness,
+  Droplets,
   ExternalLink,
+  GraduationCap,
+  HandHeart,
+  HeartHandshake,
+  MapPinned,
+  Target,
+  Eye,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -81,6 +89,47 @@ const benefits = [
   "Build meaningful professional and social connections",
 ];
 
+const objectives = [
+  {
+    title: "Education & Scholarships",
+    description:
+      "Promote educational awareness, support learning opportunities and encourage the educational development of young people.",
+    icon: GraduationCap,
+  },
+  {
+    title: "Social Welfare",
+    description:
+      "Support initiatives focused on community welfare, assistance and social development.",
+    icon: HeartHandshake,
+  },
+  {
+    title: "Health & Blood Donation",
+    description:
+      "Encourage health awareness, blood donation and community health initiatives.",
+    icon: Droplets,
+  },
+  {
+    title: "Women & Youth Empowerment",
+    description:
+      "Encourage meaningful participation, leadership and development opportunities for women and young people.",
+    icon: HandHeart,
+  },
+  {
+    title: "Employment & Entrepreneurship",
+    description:
+      "Encourage skills, employment opportunities, entrepreneurship and economic development.",
+    icon: BriefcaseBusiness,
+  },
+  {
+    title: "Relief & Rehabilitation",
+    description:
+      "Support relief and assistance initiatives for families and communities during difficult circumstances.",
+    icon: MapPinned,
+  },
+];
+
+const presenceStates = ["Uttar Pradesh", "Bihar", "Madhya Pradesh", "Karnataka"];
+
 export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -148,6 +197,142 @@ export default function Home() {
                 </motion.div>
               );
             })}
+          </div>
+        </section>
+
+        {/* VISION & MISSION */}
+        <section className="bg-white">
+          <div className="container py-24 sm:py-28">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
+                Vision & Mission
+              </p>
+              <h2 className="mt-4 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
+                Guided by unity, opportunity and progress.
+              </h2>
+            </div>
+
+            <div className="mt-12 grid gap-6 lg:grid-cols-2">
+              {[
+                {
+                  label: "Our Vision",
+                  text: "To build a united, educated, empowered and progressive Rayeen community.",
+                  icon: Eye,
+                },
+                {
+                  label: "Our Mission",
+                  text: "To promote community unity, education, social welfare, cultural development and opportunities for the social and economic advancement of the Rayeen community across India.",
+                  icon: Target,
+                },
+              ].map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="rounded-[2rem] border border-[#e3e4dc] bg-[#f8f7f1] p-7 sm:p-9"
+                  >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#056839] text-[#ead493]">
+                      <Icon size={21} />
+                    </div>
+                    <h3 className="mt-7 text-2xl font-semibold text-[#15231c]">
+                      {item.label}
+                    </h3>
+                    <p className="mt-4 text-base leading-8 text-[#66746c]">
+                      {item.text}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* OBJECTIVES */}
+        <section className="bg-[#f8f7f1]">
+          <div className="container py-24 sm:py-28">
+            <div className="max-w-2xl">
+              <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
+                Our Objectives
+              </p>
+              <h2 className="mt-4 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
+                Creating pathways for community development.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-[#66746c] sm:text-lg">
+                AIJR&apos;s community-focused work brings people together around
+                opportunities, wellbeing and collective progress.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {objectives.map((objective, index) => {
+                const Icon = objective.icon;
+
+                return (
+                  <motion.div
+                    key={objective.title}
+                    initial={{ opacity: 0, y: 26 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.55, delay: index * 0.06 }}
+                    whileHover={{ y: -6 }}
+                    className="group rounded-[1.75rem] border border-[#e3e4dc] bg-white p-7 transition-shadow hover:shadow-xl hover:shadow-[#056839]/5"
+                  >
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#056839]/8 text-[#056839] transition group-hover:bg-[#056839] group-hover:text-[#ead493]">
+                      <Icon size={20} />
+                    </div>
+                    <h3 className="mt-6 text-xl font-semibold text-[#15231c]">
+                      {objective.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-7 text-[#66746c]">
+                      {objective.description}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* OUR PRESENCE */}
+        <section className="overflow-hidden bg-[#056839] text-white">
+          <div className="container py-24 sm:py-28">
+            <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#ead493]">
+                  Our Presence
+                </p>
+                <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+                  Connected in several parts of India.
+                </h2>
+                <p className="mt-5 max-w-xl text-base leading-8 text-white/70 sm:text-lg">
+                  AIJR&apos;s organizational network includes state-level units in
+                  several parts of India.
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                {presenceStates.map((state, index) => (
+                  <motion.div
+                    key={state}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.08 }}
+                    className="flex items-center gap-4 rounded-2xl border border-white/12 bg-white/5 p-5 backdrop-blur-sm"
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#d7b765] text-[#15231c]">
+                      <MapPinned size={18} />
+                    </div>
+                    <p className="font-semibold">{state}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
