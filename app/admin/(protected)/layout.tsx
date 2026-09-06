@@ -6,12 +6,12 @@ import { requireAdmin } from "@/lib/admin-auth";
 
 const navigation = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin", available: true },
-  { label: "Events & News", icon: BarChart3, available: false },
-  { label: "Gallery / Media", icon: ImageIcon, available: false },
-  { label: "Leadership", icon: Users, available: false },
-  { label: "Membership", icon: FolderOpen, available: false },
-  { label: "Messages", icon: Mail, available: false },
-  { label: "Settings", icon: Settings, available: false },
+  { label: "Events & News", icon: BarChart3, href: "/admin/events", available: true },
+  { label: "Gallery / Media", icon: ImageIcon, href: "/admin/gallery", available: true },
+  { label: "Leadership", icon: Users, href: "/admin/leadership", available: true },
+  { label: "Membership", icon: FolderOpen, href: "/admin/membership", available: true },
+  { label: "Messages", icon: Mail, href: "/admin/messages", available: true },
+  { label: "Settings", icon: Settings, href: "/admin/settings", available: true },
 ];
 
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {

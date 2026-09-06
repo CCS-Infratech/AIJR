@@ -694,11 +694,27 @@ export default function Home() {
                       setFormError("");
 
                       const form = e.currentTarget;
-                      setTimeout(() => {
-                        setSubmitting(false);
-                        setSubmitted(true);
-                        form.reset();
-                      }, 900);
+                      const formData = new FormData(form);
+                      fetch("/api/membership", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          name: formData.get("name"),
+                          fatherName: formData.get("fatherName"),
+                          phone: formData.get("phone"),
+                          email: formData.get("email"),
+                          Address: formData.get("Address"),
+                          message: formData.get("message"),
+                        }),
+                      })
+                        .then(async (response) => {
+                          const data = await response.json();
+                          if (!response.ok || !data.success) throw new Error(data.message);
+                          setSubmitted(true);
+                          form.reset();
+                        })
+                        .catch((error: Error) => setFormError(error.message || "Submission failed."))
+                        .finally(() => setSubmitting(false));
 
                       /*
                        * ================================================
@@ -1008,11 +1024,25 @@ export default function Home() {
                       setContactError("");
 
                       const form = e.currentTarget;
-                      setTimeout(() => {
-                        setContactSubmitting(false);
-                        setContactSent(true);
-                        form.reset();
-                      }, 900);
+                      const formData = new FormData(form);
+                      fetch("/api/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          name: formData.get("name"),
+                          email: formData.get("email"),
+                          subject: formData.get("subject"),
+                          message: formData.get("message"),
+                        }),
+                      })
+                        .then(async (response) => {
+                          const data = await response.json();
+                          if (!response.ok || !data.success) throw new Error(data.message);
+                          setContactSent(true);
+                          form.reset();
+                        })
+                        .catch((error: Error) => setContactError(error.message || "Message could not be sent."))
+                        .finally(() => setContactSubmitting(false));
 
                       /*
                        * ================================================
