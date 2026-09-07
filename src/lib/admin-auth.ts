@@ -34,7 +34,9 @@ export async function createAdminSession(session: AdminSession) {
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure:
+  process.env.NODE_ENV === "production" &&
+  process.env.COOKIE_SECURE === "true",
     sameSite: "lax",
     path: "/",
     expires: expiresAt,
