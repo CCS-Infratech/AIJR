@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AIJR — All India Jamiat Rayeen
 
-## Getting Started
+Public website for All India Jamiat Rayeen — community, leadership, events, gallery, membership, and contact.
 
-First, run the development server:
+**Repository:** [github.com/CCS-Infratech/AIJR](https://github.com/CCS-Infratech/AIJR)
+
+---
+
+## What it includes
+
+- Home page with hero, about, leadership, featured events, and gallery
+- Dedicated Events and Gallery pages
+- Membership interest form and contact form
+- Route handlers that send submissions over SMTP (Nodemailer)
+- Link out to [Rayeen Shadi](https://rayeenshaadi.com/)
+- Next.js 15 App Router, Tailwind CSS, Framer Motion
+
+Forms currently confirm locally. Wire them to `/api/membership` and `/api/contact` once official SMTP credentials are in place (the handlers and the call sites are already written).
+
+---
+
+## Architecture
+
+```
+Browser
+  │
+  ├─ Pages
+  │    /            Home sections (hero, about, team, events, gallery, membership, contact)
+  │    /events      Full events list
+  │    /gallery     Full photo gallery
+  │
+  └─ Forms  ─►  /api/membership
+                /api/contact
+                     └─ Nodemailer  ─►  EMAIL_TO
+```
+
+```
+app/
+├── layout.tsx
+├── page.tsx                 # Home
+├── events/page.tsx
+├── gallery/page.tsx
+└── api/
+    ├── contact/route.ts
+    └── membership/route.ts
+
+src/components/
+├── Navbar.tsx
+├── Hero.tsx
+├── About.tsx
+└── Gallery.tsx
+
+public/images/               # Logo, team photos, gallery
+```
+
+There is no separate backend. Pages are static/client content; email is handled inside Next.js route handlers.
+
+---
+
+## How to run
+
+**Requirements:** Node.js 20+.
+
+```bash
+git clone https://github.com/CCS-Infratech/AIJR.git
+cd AIJR
+npm install
+```
+
+Optional `.env` if you want live email from the API routes:
+
+```env
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+EMAIL_TO=
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Path | Content |
+| --- | --- |
+| `/` | Home, team, featured events/gallery, membership, contact |
+| `/events` | All events |
+| `/gallery` | Photo gallery |
+| `POST /api/contact` | Contact email |
+| `POST /api/membership` | Membership request email |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All India Jamiat Rayeen
