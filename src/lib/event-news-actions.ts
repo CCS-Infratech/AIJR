@@ -1,6 +1,10 @@
 "use server";
 
-import { EventNewsType, Prisma, PublicationStatus } from "@prisma/client";
+import {
+  EventNewsType,
+  Prisma,
+  PublicationStatus,
+} from "@prisma/client";
 import { redirect } from "next/navigation";
 
 import { requireAdmin } from "@/lib/admin-auth";
@@ -8,12 +12,28 @@ import { prisma } from "@/lib/prisma";
 
 function textValue(formData: FormData, key: string) {
   const value = formData.get(key);
+
   return typeof value === "string" ? value.trim() : "";
 }
 
 function optionalTextValue(formData: FormData, key: string) {
   const value = textValue(formData, key);
+
   return value || null;
+}
+
+function multiValue(formData: FormData, key: string) {
+  return Array.from(
+    new Set(
+      formData
+        .getAll(key)
+        .filter(
+          (value): value is string =>
+            typeof value === "string" && value.trim().length > 0
+        )
+        .map((value) => value.trim())
+    )
+  );
 }
 
 function slugify(value: string) {
@@ -28,12 +48,18 @@ function parseDate(value: string) {
   if (!value) return null;
 
   const date = new Date(value);
+
   return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
 function errorRedirect(id: string | null, message: string) {
-  const path = id ? `/admin/events/${id}/edit` : "/admin/events/new";
-  redirect(`${path}?error=${encodeURIComponent(message)}`);
+  const path = id
+    ? `/admin/events/${id}/edit`
+    : "/admin/events/new";
+
+  redirect(
+    `${path}?error=${encodeURIComponent(message)}`
+  );
 }
 
 export async function saveEventNews(formData: FormData) {
@@ -45,33 +71,76 @@ export async function saveEventNews(formData: FormData) {
   const body = textValue(formData, "body");
   const typeValue = textValue(formData, "type");
   const intent = textValue(formData, "intent");
-  const eventStart = parseDate(textValue(formData, "eventStart"));
-  const eventEnd = parseDate(textValue(formData, "eventEnd"));
-  const publishedAtInput = parseDate(textValue(formData, "publishedAt"));
-  const sortOrderValue = textValue(formData, "sortOrder");
+
+  const eventStart = parseDate(
+    textValue(formData, "eventStart")
+  );
+
+  const eventEnd = parseDate(
+    textValue(formData, "eventEnd")
+  );
+
+  const publishedAtInput = parseDate(
+    textValue(formData, "publishedAt")
+  );
+
+  const sortOrderValue = textValue(
+    formData,
+    "sortOrder"
+  );
+
   const sortOrder = Number(sortOrderValue || 0);
-  const coverMediaId = optionalTextValue(formData, "coverMediaId");
+
+  const coverMediaId =
+    optionalTextValue(formData, "coverMediaId");
+
+  const galleryMediaIds = multiValue(
+    formData,
+    "galleryMediaId"
+  );
 
   if (!title || !slug || !body) {
-    errorRedirect(id, "Title, slug, and description are required.");
+    errorRedirect(
+      id,
+      "Title, slug, and description are required."
+    );
   }
 
-  if (typeValue !== EventNewsType.EVENT && typeValue !== EventNewsType.NEWS) {
-    errorRedirect(id, "Please select a valid content type.");
+  if (
+    typeValue !== EventNewsType.EVENT &&
+    typeValue !== EventNewsType.NEWS
+  ) {
+    errorRedirect(
+      id,
+      "Please select a valid content type."
+    );
   }
 
   const type = typeValue as EventNewsType;
 
-  if (eventStart === undefined || eventEnd === undefined || publishedAtInput === undefined) {
+  if (
+    eventStart === undefined ||
+    eventEnd === undefined ||
+    publishedAtInput === undefined
+  ) {
     errorRedirect(id, "One or more dates are invalid.");
   }
 
   if (!Number.isInteger(sortOrder)) {
-    errorRedirect(id, "Display order must be a whole number.");
+    errorRedirect(
+      id,
+      "Display order must be a whole number."
+    );
   }
 
   const existing = id
-    ? await prisma.eventNews.findUnique({ where: { id }, select: { id: true, publishedAt: true } })
+    ? await prisma.eventNews.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          publishedAt: true,
+        },
+      })
     : null;
 
   if (id && !existing) {
@@ -79,18 +148,60 @@ export async function saveEventNews(formData: FormData) {
   }
 
   if (coverMediaId) {
-    const media = await prisma.mediaAsset.findUnique({
+    const coverMedia = await prisma.mediaAsset.findUnique({
       where: { id: coverMediaId },
-      select: { id: true },
+      select: {
+        id: true,
+        mediaType: true,
+        publicUrl: true,
+      },
     });
 
-    if (!media) errorRedirect(id, "The selected cover media is no longer available.");
+    if (
+      !coverMedia ||
+      coverMedia.mediaType !== "IMAGE" ||
+      !coverMedia.publicUrl
+    ) {
+      errorRedirect(
+        id,
+        "The selected cover media is no longer available."
+      );
+    }
   }
 
-  const status = intent === "publish" ? PublicationStatus.PUBLISHED : PublicationStatus.DRAFT;
-  const publishedAt = status === PublicationStatus.PUBLISHED
-    ? publishedAtInput ?? existing?.publishedAt ?? new Date()
-    : null;
+  if (galleryMediaIds.length) {
+    const galleryMediaCount =
+      await prisma.mediaAsset.count({
+        where: {
+          id: {
+            in: galleryMediaIds,
+          },
+          mediaType: "IMAGE",
+          publicUrl: {
+            not: null,
+          },
+        },
+      });
+
+    if (galleryMediaCount !== galleryMediaIds.length) {
+      errorRedirect(
+        id,
+        "One or more selected gallery images are no longer available."
+      );
+    }
+  }
+
+  const status =
+    intent === "publish"
+      ? PublicationStatus.PUBLISHED
+      : PublicationStatus.DRAFT;
+
+  const publishedAt =
+    status === PublicationStatus.PUBLISHED
+      ? publishedAtInput ??
+        existing?.publishedAt ??
+        new Date()
+      : null;
 
   const data = {
     type,
@@ -111,29 +222,138 @@ export async function saveEventNews(formData: FormData) {
   } satisfies Prisma.EventNewsUncheckedCreateInput;
 
   try {
-    if (existing) {
-      await prisma.eventNews.update({ where: { id: existing.id }, data });
-    } else {
-      await prisma.eventNews.create({ data });
-    }
+    await prisma.$transaction(async (tx) => {
+      let eventId: string;
+
+      if (existing) {
+        const updated = await tx.eventNews.update({
+          where: { id: existing.id },
+          data,
+          select: { id: true },
+        });
+
+        eventId = updated.id;
+      } else {
+        const created = await tx.eventNews.create({
+          data,
+          select: { id: true },
+        });
+
+        eventId = created.id;
+      }
+
+      const existingGallery =
+        await tx.galleryItem.findMany({
+          where: {
+            eventNewsId: eventId,
+          },
+          select: {
+            id: true,
+            mediaId: true,
+          },
+        });
+
+      const selectedSet = new Set(galleryMediaIds);
+
+      const removeItems = existingGallery.filter(
+        (item) => !selectedSet.has(item.mediaId)
+      );
+
+      if (removeItems.length) {
+        await tx.galleryItem.deleteMany({
+          where: {
+            id: {
+              in: removeItems.map((item) => item.id),
+            },
+          },
+        });
+      }
+
+      for (const [
+        index,
+        mediaId,
+      ] of galleryMediaIds.entries()) {
+        const existingItem = existingGallery.find(
+          (item) => item.mediaId === mediaId
+        );
+
+        if (existingItem) {
+          await tx.galleryItem.update({
+            where: {
+              id: existingItem.id,
+            },
+            data: {
+              title,
+              category:
+                optionalTextValue(
+                  formData,
+                  "category"
+                ) || "Event",
+              sortOrder: index,
+              published:
+                status ===
+                PublicationStatus.PUBLISHED,
+            },
+          });
+        } else {
+          await tx.galleryItem.create({
+            data: {
+              mediaId,
+              eventNewsId: eventId,
+              title,
+              category:
+                optionalTextValue(
+                  formData,
+                  "category"
+                ) || "Event",
+              sortOrder: index,
+              published:
+                status ===
+                PublicationStatus.PUBLISHED,
+            },
+          });
+        }
+      }
+    });
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
-      errorRedirect(id, "That slug is already in use. Please choose a different one.");
+    if (
+      error instanceof
+        Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      errorRedirect(
+        id,
+        "That slug is already in use. Please choose a different one."
+      );
     }
 
-    errorRedirect(id, "Unable to save this item. Please try again.");
+    console.error(
+      "Failed to save event/news:",
+      error
+    );
+
+    errorRedirect(
+      id,
+      "Unable to save this item. Please try again."
+    );
   }
 
   redirect("/admin/events?saved=1");
 }
 
-export async function changeEventNewsStatus(formData: FormData) {
+export async function changeEventNewsStatus(
+  formData: FormData
+) {
   await requireAdmin();
 
   const id = textValue(formData, "id");
   const statusValue = textValue(formData, "status");
 
-  if (!id || (statusValue !== PublicationStatus.DRAFT && statusValue !== PublicationStatus.PUBLISHED)) {
+  if (
+    !id ||
+    (statusValue !== PublicationStatus.DRAFT &&
+      statusValue !== PublicationStatus.PUBLISHED)
+  ) {
     redirect("/admin/events?error=invalid");
   }
 
@@ -142,29 +362,57 @@ export async function changeEventNewsStatus(formData: FormData) {
     select: { publishedAt: true },
   });
 
-  if (!existing) redirect("/admin/events?error=not-found");
+  if (!existing) {
+    redirect("/admin/events?error=not-found");
+  }
 
-  await prisma.eventNews.update({
-    where: { id },
-    data: {
-      status: statusValue,
-      publishedAt: statusValue === PublicationStatus.PUBLISHED ? existing.publishedAt ?? new Date() : null,
-    },
-  });
+  await prisma.$transaction([
+    prisma.eventNews.update({
+      where: { id },
+      data: {
+        status: statusValue,
+        publishedAt:
+          statusValue === PublicationStatus.PUBLISHED
+            ? existing.publishedAt ?? new Date()
+            : null,
+      },
+    }),
+    prisma.galleryItem.updateMany({
+      where: {
+        eventNewsId: id,
+      },
+      data: {
+        published:
+          statusValue ===
+          PublicationStatus.PUBLISHED,
+      },
+    }),
+  ]);
 
   redirect("/admin/events?saved=1");
 }
 
-export async function deleteEventNews(formData: FormData) {
+export async function deleteEventNews(
+  formData: FormData
+) {
   await requireAdmin();
 
   const id = textValue(formData, "id");
-  if (!id) redirect("/admin/events?error=invalid");
+
+  if (!id) {
+    redirect("/admin/events?error=invalid");
+  }
 
   try {
-    await prisma.eventNews.delete({ where: { id } });
+    await prisma.eventNews.delete({
+      where: { id },
+    });
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+    if (
+      error instanceof
+        Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
       redirect("/admin/events?error=not-found");
     }
 

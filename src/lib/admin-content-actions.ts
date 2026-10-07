@@ -12,32 +12,272 @@ const validUrl = (url: string) => { try { return !url || ["http:", "https:"].inc
 
 export async function saveGallery(data: FormData) {
   await requireAdmin();
-  const id = value(data, "id"); const url = value(data, "url"); const mediaType = value(data, "mediaType");
-  if (!url || !validUrl(url) || !["IMAGE", "VIDEO"].includes(mediaType)) redirect(`/admin/gallery${id ? `/${id}/edit` : "/new"}?error=invalid`);
-  const eventNewsId = optional(data, "eventNewsId");
-  if (eventNewsId && !await prisma.eventNews.findUnique({ where: { id: eventNewsId }, select: { id: true } })) redirect("/admin/gallery?error=invalid");
-  const content = { title: optional(data,"title"), caption: optional(data,"caption"), category: optional(data,"category"), eventNewsId, sortOrder: integer(data,"sortOrder"), published: data.get("published") === "on" };
-  if (id) {
-    const item = await prisma.galleryItem.findUnique({ where: { id }, include: { media: true } }); if (!item) redirect("/admin/gallery?error=not-found");
-    await prisma.mediaAsset.update({ where: { id: item.mediaId }, data: { publicUrl: url, mediaType: mediaType as MediaType, altText: content.title, caption: content.caption } });
-    await prisma.galleryItem.update({ where: { id }, data: content });
-  } else {
-    const media = await prisma.mediaAsset.create({ data: { storageKey: `external/gallery/${Date.now()}`, publicUrl: url, mediaType: mediaType as MediaType, altText: content.title, caption: content.caption } });
-    await prisma.galleryItem.create({ data: { ...content, mediaId: media.id } });
+
+  const id = value(data, "id");
+  const url = value(data, "url");
+  const mediaId = value(data, "mediaId");
+  const mediaType = value(data, "mediaType");
+
+  if (!url || !validUrl(url) || !["IMAGE", "VIDEO"].includes(mediaType)) {
+    redirect(`/admin/gallery${id ? `/${id}/edit` : "/new"}?error=invalid`);
   }
+
+  const eventNewsId = optional(data, "eventNewsId");
+
+  if (
+    eventNewsId &&
+    !await prisma.eventNews.findUnique({
+      where: { id: eventNewsId },
+      select: { id: true },
+    })
+  ) {
+    redirect("/admin/gallery?error=invalid");
+  }
+
+  const content = {
+    title: optional(data, "title"),
+    caption: optional(data, "caption"),
+    category: optional(data, "category"),
+    eventNewsId,
+    sortOrder: integer(data, "sortOrder"),
+    published: data.get("published") === "on",
+  };
+
+  if (id) {
+    const item = await prisma.galleryItem.findUnique({
+      where: { id },
+      include: { media: true },
+    });
+
+    if (!item) {
+      redirect("/admin/gallery?error=not-found");
+    }
+
+    if (mediaId && mediaId !== item.mediaId) {
+      const uploadedMedia = await prisma.mediaAsset.findUnique({
+        where: { id: mediaId },
+      });
+
+      if (!uploadedMedia) {
+        redirect("/admin/gallery?error=invalid");
+      }
+
+      await prisma.mediaAsset.update({
+        where: { id: mediaId },
+        data: {
+          publicUrl: url,
+          mediaType: mediaType as MediaType,
+          altText: content.title,
+          caption: content.caption,
+        },
+      });
+
+      await prisma.galleryItem.update({
+        where: { id },
+        data: {
+          ...content,
+          mediaId,
+        },
+      });
+    } else {
+      await prisma.mediaAsset.update({
+        where: { id: item.mediaId },
+        data: {
+          publicUrl: url,
+          mediaType: mediaType as MediaType,
+          altText: content.title,
+          caption: content.caption,
+        },
+      });
+
+      await prisma.galleryItem.update({
+        where: { id },
+        data: content,
+      });
+    }
+  } else {
+    let selectedMediaId = mediaId;
+
+    if (selectedMediaId) {
+      const uploadedMedia = await prisma.mediaAsset.findUnique({
+        where: { id: selectedMediaId },
+        select: { id: true },
+      });
+
+      if (!uploadedMedia) {
+        redirect("/admin/gallery?error=invalid");
+      }
+
+      await prisma.mediaAsset.update({
+        where: { id: selectedMediaId },
+        data: {
+          publicUrl: url,
+          mediaType: mediaType as MediaType,
+          altText: content.title,
+          caption: content.caption,
+        },
+      });
+    } else {
+      const media = await prisma.mediaAsset.create({
+        data: {
+          storageKey: `external/gallery/${Date.now()}`,
+          publicUrl: url,
+          mediaType: mediaType as MediaType,
+          altText: content.title,
+          caption: content.caption,
+        },
+      });
+
+      selectedMediaId = media.id;
+    }
+
+    await prisma.galleryItem.create({
+      data: {
+        ...content,
+        mediaId: selectedMediaId,
+      },
+    });
+  }
+
   redirect("/admin/gallery?saved=1");
 }
 
 export async function deleteGallery(data: FormData) { await requireAdmin(); const id = value(data,"id"); if (id) await prisma.galleryItem.delete({ where:{id} }).catch(()=>null); redirect("/admin/gallery?deleted=1"); }
 
 export async function saveLeadership(data: FormData) {
-  await requireAdmin(); const id=value(data,"id"), name=value(data,"name"), designation=value(data,"designation"), photoUrl=value(data,"photoUrl");
-  if (!name || !designation || !validUrl(photoUrl)) redirect(`/admin/leadership${id ? `/${id}/edit` : "/new"}?error=invalid`);
-  const details={ name, designation, bio: optional(data,"bio"), sortOrder: integer(data,"sortOrder"), active: data.get("active") === "on" };
-  if (id) { const member=await prisma.leadershipMember.findUnique({where:{id}}); if(!member) redirect("/admin/leadership?error=not-found"); let photoMediaId=member.photoMediaId; if(photoUrl){ const media=photoMediaId ? await prisma.mediaAsset.update({where:{id:photoMediaId},data:{publicUrl:photoUrl,mediaType:MediaType.IMAGE,altText:name}}) : await prisma.mediaAsset.create({data:{storageKey:`external/team/${Date.now()}`,publicUrl:photoUrl,mediaType:MediaType.IMAGE,altText:name}}); photoMediaId=media.id; } await prisma.leadershipMember.update({where:{id},data:{...details,photoMediaId}}); }
-  else { const media=photoUrl ? await prisma.mediaAsset.create({data:{storageKey:`external/team/${Date.now()}`,publicUrl:photoUrl,mediaType:MediaType.IMAGE,altText:name}}) : null; await prisma.leadershipMember.create({data:{...details,photoMediaId:media?.id}}); }
+  await requireAdmin();
+
+  const id = value(data, "id");
+  const name = value(data, "name");
+  const designation = value(data, "designation");
+  const photoMediaId = value(data, "photoMediaId");
+  const photoUrl = value(data, "photoUrl");
+
+  if (!name || !designation) {
+    redirect(
+      `/admin/leadership${
+        id ? `?edit=${id}` : ""
+      }&error=invalid`
+    );
+  }
+
+  const details = {
+    name,
+    designation,
+    bio: optional(data, "bio"),
+    sortOrder: integer(data, "sortOrder"),
+    active: data.get("active") === "on",
+  };
+
+  let selectedMediaId: string | null =
+    photoMediaId || null;
+
+  if (selectedMediaId) {
+    const media = await prisma.mediaAsset.findUnique({
+      where: { id: selectedMediaId },
+      select: {
+        id: true,
+        mediaType: true,
+        publicUrl: true,
+      },
+    });
+
+    if (
+      !media ||
+      media.mediaType !== MediaType.IMAGE ||
+      !media.publicUrl
+    ) {
+      redirect(
+        `/admin/leadership${
+          id ? `?edit=${id}` : ""
+        }&error=invalid`
+      );
+    }
+
+    await prisma.mediaAsset.update({
+      where: { id: selectedMediaId },
+      data: {
+        altText: name,
+      },
+    });
+  } else if (photoUrl) {
+    if (!validUrl(photoUrl)) {
+      redirect(
+        `/admin/leadership${
+          id ? `?edit=${id}` : ""
+        }&error=invalid`
+      );
+    }
+
+    const existingMember = id
+      ? await prisma.leadershipMember.findUnique({
+          where: { id },
+          select: {
+            photoMediaId: true,
+          },
+        })
+      : null;
+
+    if (existingMember?.photoMediaId) {
+      const media =
+        await prisma.mediaAsset.update({
+          where: {
+            id: existingMember.photoMediaId,
+          },
+          data: {
+            publicUrl: photoUrl,
+            mediaType: MediaType.IMAGE,
+            altText: name,
+          },
+        });
+
+      selectedMediaId = media.id;
+    } else {
+      const media =
+        await prisma.mediaAsset.create({
+          data: {
+            storageKey: `external/team/${Date.now()}`,
+            publicUrl: photoUrl,
+            mediaType: MediaType.IMAGE,
+            altText: name,
+          },
+        });
+
+      selectedMediaId = media.id;
+    }
+  }
+
+  if (id) {
+    const member =
+      await prisma.leadershipMember.findUnique({
+        where: { id },
+      });
+
+    if (!member) {
+      redirect(
+        "/admin/leadership?error=not-found"
+      );
+    }
+
+    await prisma.leadershipMember.update({
+      where: { id },
+      data: {
+        ...details,
+        photoMediaId: selectedMediaId,
+      },
+    });
+  } else {
+    await prisma.leadershipMember.create({
+      data: {
+        ...details,
+        photoMediaId: selectedMediaId,
+      },
+    });
+  }
+
   redirect("/admin/leadership?saved=1");
 }
+
 export async function deleteLeadership(data: FormData) { await requireAdmin(); const id=value(data,"id"); if(id) await prisma.leadershipMember.delete({where:{id}}).catch(()=>null); redirect("/admin/leadership?deleted=1"); }
 export async function updateMembership(data: FormData) { await requireAdmin(); const id=value(data,"id"), status=value(data,"status"); if(id && Object.values(MembershipStatus).includes(status as MembershipStatus)) await prisma.membershipApplication.update({where:{id},data:{status:status as MembershipStatus}}).catch(()=>null); redirect("/admin/membership?saved=1"); }
 export async function deleteMembership(data: FormData) { await requireAdmin(); const id=value(data,"id"); if(id) await prisma.membershipApplication.delete({where:{id}}).catch(()=>null); redirect("/admin/membership?deleted=1"); }

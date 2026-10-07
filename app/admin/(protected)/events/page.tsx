@@ -17,7 +17,23 @@ function formatDate(date: Date | null) {
 export default async function EventsPage({ searchParams }: EventsPageProps) {
   const [{ saved, deleted, error }, events] = await Promise.all([
     searchParams,
-    prisma.eventNews.findMany({ orderBy: [{ updatedAt: "desc" }], take: 100 }),
+    prisma.eventNews.findMany({
+      orderBy: [{ updatedAt: "desc" }],
+      take: 100,
+      include: {
+        coverMedia: {
+          select: {
+            publicUrl: true,
+            altText: true,
+          },
+        },
+        _count: {
+          select: {
+            galleryItems: true,
+          },
+        },
+      },
+    }),
   ]);
 
   const message = saved ? "Changes saved successfully." : deleted ? "Item deleted successfully." : null;
