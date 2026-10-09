@@ -630,24 +630,42 @@ export default function Home() {
         </section>
 
         {/* MEMBERSHIP */}
-        <section id="membership" className="bg-white">
-          <div className="container py-24 sm:py-28">
-            <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+        <section
+          id="membership"
+          className="relative overflow-hidden bg-[#f8f7f1]"
+        >
+          <div
+            aria-hidden="true"
+            className="absolute -left-32 top-16 h-80 w-80 rounded-full bg-[#056839]/5 blur-3xl"
+          />
+
+          <div
+            aria-hidden="true"
+            className="absolute -right-32 bottom-10 h-96 w-96 rounded-full bg-[#d7b765]/10 blur-3xl"
+          />
+          <div className="container relative z-10 py-24 sm:py-28 lg:py-32">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
               <motion.div
                 initial={{ opacity: 0, x: -25 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
+                className="relative overflow-hidden rounded-[2.5rem] bg-[#034d2a] p-7 text-white shadow-2xl shadow-[#034d2a]/10 sm:p-10 lg:p-12"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
+                <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#d7b765]/20 bg-white/[0.06] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#ead493]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#d7b765]" />
+                  AIJR Community
+                </div>
+
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#ead493]">
                   Membership
                 </p>
 
-                <h2 className="mt-5 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
+                <h2 className="mt-5 text-4xl font-bold tracking-tight text-white sm:text-5xl">
                   Be a part of the community.
                 </h2>
 
-                <p className="mt-5 text-base leading-8 text-[#66746c]">
+                <p className="mt-5 text-base leading-8 text-white/70">
                   Join AIJR and stay connected with people, initiatives,
                   events and opportunities across the community.
                 </p>
@@ -656,9 +674,9 @@ export default function Home() {
                   {benefits.map((benefit) => (
                     <div
                       key={benefit}
-                      className="flex items-start gap-3 text-sm text-[#15231c]"
+                      className="group flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-white/80 transition duration-300 hover:-translate-y-0.5 hover:border-[#d7b765]/30 hover:bg-white/[0.07]"
                     >
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#056839] text-white">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#d7b765] text-[#15231c] shadow-sm">
                         <Check size={12} />
                       </span>
 
@@ -666,6 +684,16 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-20 -right-16 h-44 w-44 rounded-full border border-[#d7b765]/10"
+                />
+
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-10 -right-6 h-24 w-24 rounded-full bg-[#d7b765]/10 blur-2xl"
+                />
               </motion.div>
 
               <motion.div
@@ -673,7 +701,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
-                className="rounded-[2rem] border border-[#e3e4dc] bg-[#f8f7f1] p-5 sm:p-8"
+                className="rounded-[2.5rem] border border-[#e3e4dc] bg-white p-5 shadow-xl shadow-[#15231c]/5 sm:p-8 lg:p-10"
               >
                 {submitted ? (
                   <div className="flex min-h-[430px] flex-col items-center justify-center text-center">
@@ -777,11 +805,21 @@ export default function Home() {
                     className="space-y-5"
                   >
                     <div>
-                      <h3 className="text-2xl font-semibold text-[#15231c]">
+                      <div className="flex items-center justify-between gap-4">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#056839]">
+                          Your next step
+                        </p>
+
+                        <span className="rounded-full bg-[#056839]/5 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-[#056839]">
+                          Join AIJR
+                        </span>
+                      </div>
+
+                      <h3 className="mt-4 text-2xl font-semibold tracking-tight text-[#15231c] sm:text-3xl">
                         Membership Form
                       </h3>
 
-                      <p className="mt-2 text-sm leading-6 text-[#66746c]">
+                      <p className="mt-2 max-w-lg text-sm leading-6 text-[#66746c]">
                         Register your interest in becoming part of AIJR.
                       </p>
                     </div>
