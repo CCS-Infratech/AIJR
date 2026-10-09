@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -421,13 +422,13 @@ export default function Home() {
                 </p>
               </motion.div>
 
-              <a
+              <Link
                 href="/events"
                 className="inline-flex w-fit items-center gap-2 rounded-full border border-[#056839]/20 bg-white px-5 py-3 text-sm font-bold text-[#056839] transition hover:bg-[#056839] hover:text-white"
               >
                 View All Events
                 <ArrowRight size={16} />
-              </a>
+              </Link>
             </div>
 
             <div className="mt-14 grid gap-7 lg:grid-cols-3">
@@ -465,7 +466,7 @@ export default function Home() {
                     <p className="mt-3 text-sm leading-7 text-[#66746c]">
                       {event.description}
                     </p>
-                    <a
+                    <Link
                       href="/events"
                       className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#056839]"
                     >
@@ -474,7 +475,7 @@ export default function Home() {
                         size={15}
                         className="transition-transform group-hover:translate-x-1"
                       />
-                    </a>
+                    </Link>
                   </div>
                 </motion.article>
               ))}
