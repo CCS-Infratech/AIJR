@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -245,94 +246,198 @@ export default function Home() {
         </section>
 
         {/* EVENTS */}
-        <section id="events" className="bg-[#f8f7f1]">
-          <div className="container py-24 sm:py-28">
-            <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+        <section
+          id="events"
+          className="relative overflow-hidden bg-[#f8f7f1]"
+        >
+          <div
+            aria-hidden="true"
+            className="absolute -right-32 top-16 h-80 w-80 rounded-full bg-[#056839]/5 blur-3xl"
+          />
+
+          <div
+            aria-hidden="true"
+            className="absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-[#d7b765]/10 blur-3xl"
+          />
+
+          <div className="container relative z-10 py-24 sm:py-28">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
-                className="max-w-2xl"
+                className="max-w-3xl"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
-                  Events & News
-                </p>
+                <div className="flex items-center gap-3">
+                  <span className="h-px w-10 bg-[#d7b765]" />
+                  <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
+                    Events & News
+                  </p>
+                </div>
 
-                <h2 className="mt-4 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
-                  Stay connected with what&apos;s happening.
+                <h2 className="mt-5 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl lg:text-6xl">
+                  Moments that bring the community together.
                 </h2>
 
-                <p className="mt-5 text-base leading-8 text-[#66746c] sm:text-lg">
+                <p className="mt-5 max-w-2xl text-base leading-8 text-[#66746c] sm:text-lg">
                   Discover upcoming gatherings, initiatives and important
-                  moments from across the community.
+                  moments from across the AIJR community.
                 </p>
               </motion.div>
 
-              <a
-                href="#contact"
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#056839]/20 bg-white px-5 py-3 text-sm font-bold text-[#056839] transition hover:bg-[#056839] hover:text-white"
-              >
-                Share an Event
-                <ArrowRight size={16} />
-              </a>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  href="/events"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#056839] px-5 py-3 text-sm font-bold text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-[#034d2a] hover:shadow-lg"
+                >
+                  View all events
+                  <ArrowRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </Link>
+
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#056839]/20 bg-white px-5 py-3 text-sm font-bold text-[#056839] transition duration-300 hover:-translate-y-0.5 hover:border-[#056839] hover:shadow-md"
+                >
+                  Share an Event
+                </a>
+              </div>
             </div>
 
-            <div className="mt-14 grid gap-7 lg:grid-cols-3">
-              {events.map((event, index) => (
-                <motion.article
-                  key={event.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ y: -8 }}
-                  className="group overflow-hidden rounded-[2rem] border border-[#e3e4dc] bg-white shadow-sm transition-shadow hover:shadow-xl"
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="object-cover transition duration-700 group-hover:scale-105"
-                    />
+            <div className="mt-14 grid gap-6 lg:grid-cols-[1.35fr_0.85fr]">
+              <motion.article
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7 }}
+                whileHover={{ y: -8 }}
+                className="group relative overflow-hidden rounded-[2.25rem] border border-[#e3e4dc] bg-white shadow-sm transition-shadow duration-500 hover:shadow-2xl"
+              >
+                <div className="relative h-[320px] overflow-hidden sm:h-[410px] lg:h-[430px]">
+                  <Image
+                    src={events[0].image}
+                    alt={events[0].title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 65vw"
+                    className="object-cover transition duration-1000 ease-out group-hover:scale-110"
+                  />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#15231c]/85 via-[#15231c]/20 to-transparent" />
 
-                    <div className="absolute left-5 top-5 flex h-16 w-16 flex-col items-center justify-center rounded-2xl bg-white text-[#15231c] shadow-lg">
-                      <span className="text-xl font-bold leading-none">
-                        {event.date}
-                      </span>
+                  <div className="absolute left-5 top-5 rounded-full border border-white/20 bg-black/20 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-md">
+                    Featured community moment
+                  </div>
 
-                      <span className="mt-1 text-[9px] font-bold tracking-[0.18em] text-[#056839]">
-                        {event.month}
-                      </span>
+                  <div className="absolute bottom-5 left-5 flex h-[76px] w-[76px] flex-col items-center justify-center rounded-[1.35rem] bg-white text-[#15231c] shadow-xl sm:bottom-7 sm:left-7 sm:h-[88px] sm:w-[88px]">
+                    <span className="text-2xl font-bold leading-none sm:text-3xl">
+                      {events[0].date}
+                    </span>
+                    <span className="mt-1 text-[9px] font-bold tracking-[0.2em] text-[#056839]">
+                      {events[0].month}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="relative p-6 sm:p-8">
+                  <div className="absolute inset-x-8 top-0 h-1 -translate-y-1/2 origin-left scale-x-0 bg-[#d7b765] transition-transform duration-500 group-hover:scale-x-100" />
+
+                  <div className="flex items-start justify-between gap-5">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#056839]">
+                        01 / AIJR Events
+                      </p>
+
+                      <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[#15231c] sm:text-3xl">
+                        {events[0].title}
+                      </h3>
                     </div>
+
+                    <ArrowRight
+                      size={20}
+                      className="mt-1 shrink-0 text-[#056839] transition-transform duration-300 group-hover:translate-x-1"
+                    />
                   </div>
 
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-[#15231c]">
-                      {event.title}
-                    </h3>
+                  <p className="mt-4 max-w-2xl text-sm leading-7 text-[#66746c] sm:text-base">
+                    {events[0].description}
+                  </p>
 
-                    <p className="mt-3 text-sm leading-7 text-[#66746c]">
-                      {event.description}
-                    </p>
-
-                    <a
-                      href="#contact"
-                      className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#056839]"
-                    >
-                      Learn more
-                      <ArrowRight
-                        size={15}
-                        className="transition-transform group-hover:translate-x-1"
-                      />
-                    </a>
+                  <div className="mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#66746c]">
+                    <CalendarDays size={15} className="text-[#056839]" />
+                    Community gathering
                   </div>
-                </motion.article>
-              ))}
+                </div>
+              </motion.article>
+
+              <div className="grid gap-6">
+                {events.slice(1).map((event, index) => (
+                  <motion.article
+                    key={event.title}
+                    initial={{ opacity: 0, x: 25 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{
+                      duration: 0.65,
+                      delay: index * 0.12,
+                    }}
+                    whileHover={{ y: -6 }}
+                    className="group overflow-hidden rounded-[2rem] border border-[#e3e4dc] bg-white shadow-sm transition-shadow duration-500 hover:shadow-xl"
+                  >
+                    <div className="grid min-h-[245px] sm:grid-cols-[0.95fr_1.05fr]">
+                      <div className="relative min-h-[220px] overflow-hidden sm:min-h-0">
+                        <Image
+                          src={event.image}
+                          alt={event.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 35vw"
+                          className="object-cover transition duration-700 group-hover:scale-110"
+                        />
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#15231c]/65 via-transparent to-transparent" />
+
+                        <div className="absolute left-4 top-4 flex h-14 w-14 flex-col items-center justify-center rounded-xl bg-white text-[#15231c] shadow-lg">
+                          <span className="text-lg font-bold leading-none">
+                            {event.date}
+                          </span>
+                          <span className="mt-1 text-[8px] font-bold tracking-[0.16em] text-[#056839]">
+                            {event.month}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="relative flex flex-col justify-center p-6 sm:p-7">
+                        <div className="absolute inset-y-6 left-0 w-1 origin-bottom scale-y-0 bg-[#d7b765] transition-transform duration-500 group-hover:scale-y-100" />
+
+                        <div className="flex items-center justify-between gap-4">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#056839]">
+                            {String(index + 2).padStart(2, "0")} / AIJR Events
+                          </p>
+
+                          <ArrowRight
+                            size={18}
+                            className="shrink-0 text-[#056839] transition-transform duration-300 group-hover:translate-x-1"
+                          />
+                        </div>
+
+                        <h3 className="mt-3 text-xl font-semibold tracking-tight text-[#15231c] sm:text-2xl">
+                          {event.title}
+                        </h3>
+
+                        <p className="mt-3 line-clamp-3 text-sm leading-7 text-[#66746c]">
+                          {event.description}
+                        </p>
+
+                        <p className="mt-5 text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]">
+                          Community update
+                        </p>
+                      </div>
+                    </div>
+                  </motion.article>
+                ))}
+              </div>
             </div>
           </div>
         </section>
