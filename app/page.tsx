@@ -446,56 +446,136 @@ export default function Home() {
         <Gallery />
 
         {/* RAYEEN SHADI */}
-        <section className="relative overflow-hidden bg-[#056839] text-white">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.08),transparent_25%),radial-gradient(circle_at_85%_80%,rgba(215,183,101,0.12),transparent_30%)]" />
+        <section
+          id="rayeen-shadi"
+          className="relative overflow-hidden bg-[#056839] text-white"
+        >
+          <div
+            aria-hidden="true"
+            className="absolute -right-32 -top-28 h-96 w-96 rounded-full bg-[#d7b765]/10 blur-3xl"
+          />
 
-          <div className="container relative z-10 py-24 sm:py-28">
-            <div className="grid gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-center">
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-white/[0.05] blur-3xl"
+          />
+
+          <div
+            aria-hidden="true"
+            className="absolute right-[8%] top-[18%] hidden h-40 w-40 rounded-full border border-[#d7b765]/15 lg:block"
+          />
+
+          <div className="container relative z-10 py-24 sm:py-28 lg:py-32">
+            <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
               <motion.div
-                initial={{ opacity: 0, x: -25 }}
+                initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.75 }}
               >
-                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#ead493]">
-                  Rayeen Shadi
-                </p>
+                <div className="flex items-center gap-3">
+                  <span className="h-px w-12 bg-[#d7b765]" />
 
-                <h2 className="mt-5 max-w-2xl text-4xl font-bold tracking-tight sm:text-6xl">
+                  <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#ead493]">
+                    Rayeen Shadi
+                  </p>
+                </div>
+
+                <h2 className="mt-6 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
                   Helping families connect in a meaningful way.
                 </h2>
 
-                <p className="mt-6 max-w-xl text-base leading-8 text-white/70 sm:text-lg">
+                <p className="mt-7 max-w-xl text-base leading-8 text-white/70 sm:text-lg">
                   Explore the dedicated Rayeen Shadi platform created to help
                   members connect with suitable families and build meaningful
                   relationships.
                 </p>
 
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {[
+                    "CONNECT",
+                    "DISCOVER",
+                    "BELONG",
+                  ].map((item, index) => (
+                    <motion.span
+                      key={item}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        duration: 0.45,
+                        delay: 0.15 + index * 0.08,
+                      }}
+                      className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-[10px] font-bold tracking-[0.18em] text-white/70 backdrop-blur-sm"
+                    >
+                      {item}
+                    </motion.span>
+                  ))}
+                </div>
+
                 <a
                   href="https://rayeenshaadi.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#d7b765] px-7 py-4 text-sm font-bold text-[#15231c] transition hover:bg-[#ead493]"
+                  className="group mt-9 inline-flex items-center gap-3 rounded-full bg-[#d7b765] px-7 py-4 text-sm font-bold text-[#15231c] shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:bg-[#ead493] hover:shadow-xl"
                 >
                   Visit Rayeen Shadi
-                  <ExternalLink size={16} />
+                  <ExternalLink
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </a>
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, x: 30, scale: 0.97 }}
+                initial={{ opacity: 0, x: 30, scale: 0.96 }}
                 whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="relative"
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.85 }}
+                className="relative mx-auto w-full max-w-xl"
               >
-                <div className="rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-md sm:p-8">
-                  <div className="rounded-[1.5rem] border border-[#d7b765]/20 bg-[#034d2a]/60 p-6 sm:p-8">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#d7b765] text-[#15231c]">
-                      <Users size={24} />
+                <motion.div
+                  aria-hidden="true"
+                  className="absolute -inset-5 rounded-[2.5rem] border border-[#d7b765]/15"
+                  animate={{
+                    rotate: [0, 1.2, 0, -1.2, 0],
+                    scale: [1, 1.015, 1],
+                  }}
+                  transition={{
+                    duration: 9,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+
+                <motion.div
+                  aria-hidden="true"
+                  className="absolute -inset-8 rounded-[3rem] bg-[#d7b765]/10 blur-3xl"
+                  animate={{ opacity: [0.25, 0.5, 0.25] }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+
+                <div className="relative rounded-[2.5rem] border border-white/10 bg-white/[0.06] p-4 shadow-2xl backdrop-blur-md sm:p-6">
+                  <div className="rounded-[2rem] border border-[#d7b765]/20 bg-[#034d2a]/80 p-6 sm:p-8">
+                    <div className="flex items-start justify-between gap-5">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#d7b765] text-[#15231c] shadow-lg">
+                        <Users size={26} />
+                      </div>
+
+                      <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.18em] text-white/45">
+                        AIJR Community
+                      </span>
                     </div>
 
-                    <h3 className="mt-7 text-2xl font-semibold">
+                    <p className="mt-8 text-[10px] font-bold uppercase tracking-[0.24em] text-[#d7b765]">
+                      A dedicated space for connections
+                    </p>
+
+                    <h3 className="mt-3 text-2xl font-semibold leading-tight sm:text-3xl">
                       Community connections matter.
                     </h3>
 
@@ -504,6 +584,35 @@ export default function Home() {
                       individuals to discover connections within the wider
                       Rayeen community.
                     </p>
+
+                    <div className="mt-8 grid grid-cols-3 gap-3">
+                      {[
+                        "Families",
+                        "Connections",
+                        "Community",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-center"
+                        >
+                          <span className="block text-[9px] font-bold uppercase tracking-[0.1em] text-white/40">
+                            {item}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-6 h-px bg-gradient-to-r from-[#d7b765]/50 via-white/10 to-transparent" />
+
+                    <div className="mt-5 flex items-center justify-between gap-4">
+                      <span className="text-xs font-semibold text-white/45">
+                        Explore the platform
+                      </span>
+
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d7b765] text-[#15231c] transition-transform duration-300 hover:translate-x-1">
+                        <ArrowRight size={17} />
+                      </span>
+                    </div>
                   </div>
                 </div>
               </motion.div>
