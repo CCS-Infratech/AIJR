@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 const images = [
   "/images/gallery/1.jpeg",
   "/images/gallery/2.jpeg",
+  "/images/gallery/3.jpeg",
   "/images/gallery/4.jpeg",
   "/images/gallery/5.jpeg",
   "/images/gallery/6.jpeg",
