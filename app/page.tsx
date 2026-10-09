@@ -944,77 +944,105 @@ export default function Home() {
         </section>
 
         {/* CONNECT WITH US */}
-        <section id="contact" className="bg-[#f8f7f1]">
-          <div className="container py-24 sm:py-28">
-            <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr]">
+        <section
+          id="contact"
+          className="relative overflow-hidden bg-[#f8f7f1]"
+        >
+          <div
+            aria-hidden="true"
+            className="absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#056839]/5 blur-3xl"
+          />
+
+          <div
+            aria-hidden="true"
+            className="absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-[#d7b765]/10 blur-3xl"
+          />
+          <div className="container relative z-10 py-24 sm:py-28 lg:py-32">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
+                className="relative overflow-hidden rounded-[2.5rem] bg-[#034d2a] p-7 text-white shadow-2xl shadow-[#034d2a]/10 sm:p-10 lg:p-12"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#056839]">
+                <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#d7b765]/20 bg-white/[0.06] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#ead493]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#d7b765]" />
+                  AIJR Connect
+                </div>
+
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#ead493]">
                   Connect With Us
                 </p>
 
-                <h2 className="mt-5 text-4xl font-bold tracking-tight text-[#15231c] sm:text-5xl">
+                <h2 className="mt-5 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
                   Let&apos;s build a stronger community together.
                 </h2>
 
-                <p className="mt-5 max-w-xl text-base leading-8 text-[#66746c]">
+                <p className="mt-5 max-w-xl text-base leading-8 text-white/70">
                   Have a question, suggestion or community initiative to share?
                   Get in touch with the AIJR team.
                 </p>
 
                 <div className="mt-9 space-y-4">
-                  <div className="flex items-start gap-4 rounded-2xl border border-[#e3e4dc] bg-white p-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#056839] text-white">
+                  <div className="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 transition duration-300 hover:-translate-y-0.5 hover:border-[#d7b765]/30 hover:bg-white/[0.07]">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7b765] text-[#15231c] shadow-sm">
                       <Mail size={18} />
                     </div>
 
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-[#15231c]">
+                      <p className="text-sm font-semibold text-white">
                         Email
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
+                      <p className="mt-1 text-sm leading-6 text-white/55">
                         Official email will be added once confirmed.
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 rounded-2xl border border-[#e3e4dc] bg-white p-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#056839] text-white">
+                  <div className="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 transition duration-300 hover:-translate-y-0.5 hover:border-[#d7b765]/30 hover:bg-white/[0.07]">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7b765] text-[#15231c] shadow-sm">
                       <Phone size={18} />
                     </div>
 
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-[#15231c]">
+                      <p className="text-sm font-semibold text-white">
                         Phone
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
+                      <p className="mt-1 text-sm leading-6 text-white/55">
                         Official contact number will be added once confirmed.
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 rounded-2xl border border-[#e3e4dc] bg-white p-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#056839] text-white">
+                  <div className="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 transition duration-300 hover:-translate-y-0.5 hover:border-[#d7b765]/30 hover:bg-white/[0.07]">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7b765] text-[#15231c] shadow-sm">
                       <MapPin size={18} />
                     </div>
 
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-[#15231c]">
+                      <p className="text-sm font-semibold text-white">
                         Location
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-[#66746c]">
+                      <p className="mt-1 text-sm leading-6 text-white/55">
                         India
                       </p>
                     </div>
                   </div>
                 </div>
+
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-20 -right-16 h-44 w-44 rounded-full border border-[#d7b765]/10"
+                />
+
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-8 -right-2 h-24 w-24 rounded-full bg-[#d7b765]/10 blur-2xl"
+                />
               </motion.div>
 
               <motion.div
@@ -1022,11 +1050,11 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
-                className="rounded-[2rem] border border-[#e3e4dc] bg-white p-5 shadow-sm sm:p-8"
+                className="rounded-[2.5rem] border border-[#e3e4dc] bg-white p-5 shadow-xl shadow-[#15231c]/5 sm:p-8 lg:p-10"
               >
                 {contactSent ? (
                   <div className="flex min-h-[430px] flex-col items-center justify-center text-center">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#056839] text-white">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#056839] text-white shadow-lg">
                       <Check size={28} />
                     </div>
 
@@ -1123,11 +1151,21 @@ export default function Home() {
                     className="space-y-5"
                   >
                     <div>
-                      <h3 className="text-2xl font-semibold text-[#15231c]">
+                      <div className="flex items-center justify-between gap-4">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#056839]">
+                          Start a conversation
+                        </p>
+
+                        <span className="rounded-full bg-[#056839]/5 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-[#056839]">
+                          Contact AIJR
+                        </span>
+                      </div>
+
+                      <h3 className="mt-4 text-2xl font-semibold tracking-tight text-[#15231c] sm:text-3xl">
                         Send us a message
                       </h3>
 
-                      <p className="mt-2 text-sm leading-6 text-[#66746c]">
+                      <p className="mt-2 max-w-lg text-sm leading-6 text-[#66746c]">
                         Reach out to AIJR with your question, suggestion or
                         community initiative.
                       </p>
