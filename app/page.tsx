@@ -108,52 +108,74 @@ export default function Home() {
         <About />
 
         {/* COMMUNITY HIGHLIGHT */}
-        <section className="border-y border-[#e3e4dc] bg-[#f8f7f1]">
-          <div className="container grid gap-8 py-10 sm:grid-cols-3">
-            {[
-              {
-                icon: Users,
-                value: "One Community",
-                label: "Connected across India",
-              },
-              {
-                icon: CalendarDays,
-                value: "Shared Future",
-                label: "Built through collective effort",
-              },
-              {
-                icon: Check,
-                value: "Stronger Together",
-                label: "United by values and identity",
-              },
-            ].map((item, index) => {
-              const Icon = item.icon;
+        <section className="relative overflow-hidden bg-[#034d2a] text-white">
+          <div
+            aria-hidden="true"
+            className="absolute -left-24 top-0 h-72 w-72 rounded-full bg-[#056839]/40 blur-3xl"
+          />
 
-              return (
-                <motion.div
-                  key={item.value}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.55, delay: index * 0.08 }}
-                  className="flex items-center gap-4"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#056839] text-[#ead493]">
-                    <Icon size={20} />
-                  </div>
+          <div
+            aria-hidden="true"
+            className="absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-[#d7b765]/10 blur-3xl"
+          />
 
-                  <div>
-                    <p className="font-semibold text-[#15231c]">
+          <div className="container relative z-10 py-8 sm:py-10">
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                {
+                  icon: Users,
+                  value: "One Community",
+                  label: "Connected across India",
+                },
+                {
+                  icon: CalendarDays,
+                  value: "Shared Future",
+                  label: "Built through collective effort",
+                },
+                {
+                  icon: Check,
+                  value: "Stronger Together",
+                  label: "United by values and identity",
+                },
+              ].map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <motion.div
+                    key={item.value}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: index * 0.1,
+                    }}
+                    whileHover={{ y: -5 }}
+                    className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] p-5 backdrop-blur-md transition-shadow duration-500 hover:shadow-2xl hover:shadow-black/20"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#d7b765] text-[#15231c] shadow-lg">
+                        <Icon size={19} />
+                      </div>
+
+                      <span className="text-xs font-bold tracking-[0.2em] text-white/30">
+                        0{index + 1}
+                      </span>
+                    </div>
+
+                    <p className="mt-6 text-lg font-bold tracking-tight">
                       {item.value}
                     </p>
 
-                    <p className="mt-1 text-sm text-[#66746c]">
+                    <p className="mt-1 text-sm text-white/55">
                       {item.label}
                     </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+
+                    <div className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-[#d7b765] transition-transform duration-500 group-hover:scale-x-100" />
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
@@ -181,7 +203,7 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            <div className="aijr-team-grid mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={member.name}
@@ -190,9 +212,9 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   whileHover={{ y: -10, scale: 1.01 }}
-                  className="group relative overflow-hidden rounded-[2rem] border border-[#e3e4dc] bg-[#f8f7f1] p-6 shadow-sm transition-all duration-500 hover:border-[#d7b765]/50 hover:shadow-2xl hover:shadow-[#056839]/10"
+                  className="aijr-team-card group relative overflow-hidden rounded-[2rem] border border-[#e3e4dc] bg-[#f8f7f1] p-6 shadow-sm transition-all duration-500 hover:border-[#d7b765]/50 hover:shadow-2xl hover:shadow-[#056839]/10"
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-white">
+                  <div className="aijr-team-image relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-white">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.15),transparent_28%),radial-gradient(circle_at_80%_75%,rgba(215,183,101,0.18),transparent_30%)]" />
 
                     <Image
