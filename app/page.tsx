@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import AIJRMarquee from "@/components/AIJRMarquee";
 import Gallery from "@/components/Gallery";
 
 const events = [
@@ -106,6 +107,8 @@ export default function Home() {
 
         {/* ABOUT */}
         <About />
+
+        <AIJRMarquee />
 
         {/* COMMUNITY HIGHLIGHT */}
         <section className="relative overflow-hidden bg-[#034d2a] text-white">

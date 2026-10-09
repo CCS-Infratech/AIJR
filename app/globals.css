@@ -285,3 +285,52 @@ img {
     transform: translateY(-3px);
   }
 }
+
+/* AIJR BRAND MARQUEE */
+
+.aijr-marquee {
+  isolation: isolate;
+}
+
+.aijr-marquee::before,
+.aijr-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 90px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.aijr-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, #fff, transparent);
+}
+
+.aijr-marquee::after {
+  right: 0;
+  background: linear-gradient(270deg, #fff, transparent);
+}
+
+.aijr-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: aijr-marquee-scroll 28s linear infinite;
+}
+
+@keyframes aijr-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aijr-marquee-track {
+    animation: none;
+  }
+}
