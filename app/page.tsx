@@ -609,9 +609,18 @@ export default function Home() {
                         Explore the platform
                       </span>
 
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d7b765] text-[#15231c] transition-transform duration-300 hover:translate-x-1">
-                        <ArrowRight size={17} />
-                      </span>
+                      <a
+                        href="https://rayeenshaadi.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open Rayeen Shadi website"
+                        className="group/arrow flex h-10 w-10 items-center justify-center rounded-full bg-[#d7b765] text-[#15231c] transition-transform duration-300 hover:translate-x-1"
+                      >
+                        <ArrowRight
+                          size={17}
+                          className="transition-transform duration-300 group-hover/arrow:translate-x-0.5"
+                        />
+                      </a>
                     </div>
                   </div>
                 </div>
