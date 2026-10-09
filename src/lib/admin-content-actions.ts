@@ -159,9 +159,9 @@ export async function saveLeadership(data: FormData) {
 
   if (!name || !designation) {
     redirect(
-      `/admin/leadership${
-        id ? `?edit=${id}` : ""
-      }&error=invalid`
+      id
+        ? `/admin/leadership?edit=${encodeURIComponent(id)}&error=invalid`
+        : "/admin/leadership?error=invalid"
     );
   }
 
@@ -173,8 +173,7 @@ export async function saveLeadership(data: FormData) {
     active: data.get("active") === "on",
   };
 
-  let selectedMediaId: string | null =
-    photoMediaId || null;
+  let selectedMediaId: string | null = photoMediaId || null;
 
   if (selectedMediaId) {
     const media = await prisma.mediaAsset.findUnique({
@@ -192,75 +191,42 @@ export async function saveLeadership(data: FormData) {
       !media.publicUrl
     ) {
       redirect(
-        `/admin/leadership${
-          id ? `?edit=${id}` : ""
-        }&error=invalid`
+        id
+          ? `/admin/leadership?edit=${encodeURIComponent(id)}&error=invalid`
+          : "/admin/leadership?error=invalid"
       );
     }
 
-    await prisma.mediaAsset.update({
-      where: { id: selectedMediaId },
-      data: {
-        altText: name,
-      },
-    });
+    // Existing Media Library assets are shared. Reference the asset,
+    // but do not mutate its metadata here.
   } else if (photoUrl) {
     if (!validUrl(photoUrl)) {
       redirect(
-        `/admin/leadership${
-          id ? `?edit=${id}` : ""
-        }&error=invalid`
+        id
+          ? `/admin/leadership?edit=${encodeURIComponent(id)}&error=invalid`
+          : "/admin/leadership?error=invalid"
       );
     }
 
-    const existingMember = id
-      ? await prisma.leadershipMember.findUnique({
-          where: { id },
-          select: {
-            photoMediaId: true,
-          },
-        })
-      : null;
+    const media = await prisma.mediaAsset.create({
+      data: {
+        storageKey: `external/team/${Date.now()}`,
+        publicUrl: photoUrl,
+        mediaType: MediaType.IMAGE,
+        altText: name,
+      },
+    });
 
-    if (existingMember?.photoMediaId) {
-      const media =
-        await prisma.mediaAsset.update({
-          where: {
-            id: existingMember.photoMediaId,
-          },
-          data: {
-            publicUrl: photoUrl,
-            mediaType: MediaType.IMAGE,
-            altText: name,
-          },
-        });
-
-      selectedMediaId = media.id;
-    } else {
-      const media =
-        await prisma.mediaAsset.create({
-          data: {
-            storageKey: `external/team/${Date.now()}`,
-            publicUrl: photoUrl,
-            mediaType: MediaType.IMAGE,
-            altText: name,
-          },
-        });
-
-      selectedMediaId = media.id;
-    }
+    selectedMediaId = media.id;
   }
 
   if (id) {
-    const member =
-      await prisma.leadershipMember.findUnique({
-        where: { id },
-      });
+    const member = await prisma.leadershipMember.findUnique({
+      where: { id },
+    });
 
     if (!member) {
-      redirect(
-        "/admin/leadership?error=not-found"
-      );
+      redirect("/admin/leadership?error=not-found");
     }
 
     await prisma.leadershipMember.update({
@@ -282,7 +248,22 @@ export async function saveLeadership(data: FormData) {
   redirect("/admin/leadership?saved=1");
 }
 
-export async function deleteLeadership(data: FormData) { await requireAdmin(); const id=value(data,"id"); if(id) await prisma.leadershipMember.delete({where:{id}}).catch(()=>null); redirect("/admin/leadership?deleted=1"); }
+export async function deleteLeadership(data: FormData) {
+  await requireAdmin();
+
+  const id = value(data, "id");
+
+  if (id) {
+    await prisma.leadershipMember
+      .delete({
+        where: { id },
+      })
+      .catch(() => null);
+  }
+
+  redirect("/admin/leadership?deleted=1");
+}
+
 export async function updateMembership(data: FormData) { await requireAdmin(); const id=value(data,"id"), status=value(data,"status"); if(id && Object.values(MembershipStatus).includes(status as MembershipStatus)) await prisma.membershipApplication.update({where:{id},data:{status:status as MembershipStatus}}).catch(()=>null); redirect("/admin/membership?saved=1"); }
 export async function deleteMembership(data: FormData) { await requireAdmin(); const id=value(data,"id"); if(id) await prisma.membershipApplication.delete({where:{id}}).catch(()=>null); redirect("/admin/membership?deleted=1"); }
 export async function updateMessage(data: FormData) { await requireAdmin(); const id=value(data,"id"), status=value(data,"status"); if(id && Object.values(ContactMessageStatus).includes(status as ContactMessageStatus)) await prisma.contactMessage.update({where:{id},data:{status:status as ContactMessageStatus}}).catch(()=>null); redirect("/admin/messages?saved=1"); }
