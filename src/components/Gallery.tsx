@@ -57,20 +57,27 @@ export default function Gallery() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closeGallery();
+        setSelected(null);
+        return;
       }
 
       if (event.key === "ArrowLeft") {
-        previousImage();
+        setSelected((current) => {
+          if (current === null) return null;
+          return current === 0 ? images.length - 1 : current - 1;
+        });
+        return;
       }
 
       if (event.key === "ArrowRight") {
-        nextImage();
+        setSelected((current) => {
+          if (current === null) return null;
+          return current === images.length - 1 ? 0 : current + 1;
+        });
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
-
     document.body.style.overflow = "hidden";
 
     return () => {

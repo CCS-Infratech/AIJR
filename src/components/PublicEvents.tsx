@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import Link from "next/link";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import { motion } from "framer-motion";
@@ -96,10 +98,13 @@ export default function PublicEvents({
                       >
                         <div className="relative aspect-[16/10] overflow-hidden bg-[#034d2a]">
                           {event.coverUrl ? (
-                            <img
+                            <Image
                               src={event.coverUrl}
                               alt={event.coverAlt}
-                              className="h-full w-full object-cover"
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 33vw"
+                              unoptimized
+                              className="object-cover"
                             />
                           ) : (
                             <div className="h-full w-full bg-gradient-to-br from-[#056839] to-[#034d2a]" />

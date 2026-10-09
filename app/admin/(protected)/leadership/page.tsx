@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -210,14 +211,15 @@ export default async function LeadershipAdmin({
               >
                 <td className="p-4">
                   {member.photoMedia?.publicUrl ? (
-                    <img
-                      src={
-                        member.photoMedia.publicUrl
-                      }
+                    <Image
+                      src={member.photoMedia.publicUrl}
                       alt={
                         member.photoMedia.altText ||
                         member.name
                       }
+                      width={56}
+                      height={56}
+                      unoptimized
                       className="h-14 w-14 rounded-xl object-cover"
                     />
                   ) : (

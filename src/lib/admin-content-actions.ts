@@ -19,7 +19,11 @@ export async function saveGallery(data: FormData) {
   const mediaType = value(data, "mediaType");
 
   if (!url || !validUrl(url) || !["IMAGE", "VIDEO"].includes(mediaType)) {
-    redirect(`/admin/gallery${id ? `/${id}/edit` : "/new"}?error=invalid`);
+    redirect(
+      id
+        ? `/admin/gallery?edit=${encodeURIComponent(id)}&error=invalid`
+        : "/admin/gallery?error=invalid"
+    );
   }
 
   const eventNewsId = optional(data, "eventNewsId");

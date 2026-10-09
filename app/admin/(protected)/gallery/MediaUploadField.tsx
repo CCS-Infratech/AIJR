@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEffect, useState } from "react";
 
 type MediaItem = {
@@ -23,6 +25,7 @@ type MediaItem = {
 type Props = {
   initialUrl?: string;
   initialMediaId?: string;
+  initialMediaType?: "IMAGE" | "VIDEO";
 };
 
 function formatFileSize(bytes: number | null) {
@@ -56,9 +59,13 @@ function isInUse(item: MediaItem) {
 export default function MediaUploadField({
   initialUrl = "",
   initialMediaId = "",
+  initialMediaType = "IMAGE",
 }: Props) {
   const [url, setUrl] = useState(initialUrl);
   const [mediaId, setMediaId] = useState(initialMediaId);
+  const [mediaType] = useState<"IMAGE" | "VIDEO">(
+    initialMediaType
+  );
 
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
@@ -217,11 +224,25 @@ export default function MediaUploadField({
         {url && (
           <div className="mt-3 overflow-hidden rounded-xl border border-[#e3e4dc] bg-[#f8f7f1]">
             <div className="flex items-center gap-4 p-3">
-              <img
-                src={url}
-                alt="Selected media"
-                className="h-20 w-28 rounded-lg object-cover"
-              />
+              {mediaType === "VIDEO" ? (
+                <video
+                  src={url}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  controls
+                  className="h-20 w-28 rounded-lg bg-black object-cover"
+                />
+              ) : (
+                <Image
+                  src={url}
+                  alt="Selected media"
+                  width={112}
+                  height={80}
+                  unoptimized
+                  className="h-20 w-28 rounded-lg object-cover"
+                />
+              )}
 
               <div className="min-w-0">
                 <p className="text-sm font-semibold">Selected media</p>
@@ -342,13 +363,16 @@ export default function MediaUploadField({
                             className="group block w-full text-left"
                           >
                             <div className="aspect-[4/3] overflow-hidden bg-[#f8f7f1]">
-                              <img
+                              <Image
                                 src={item.publicUrl}
                                 alt={
                                   item.altText ||
                                   fileName(item.storageKey)
                                 }
-                                className="h-full w-full object-cover transition duration-200 group-hover:scale-[1.02]"
+                                fill
+                                sizes="(max-width: 1024px) 50vw, 25vw"
+                                unoptimized
+                                className="object-cover transition duration-200 group-hover:scale-[1.02]"
                               />
                             </div>
 

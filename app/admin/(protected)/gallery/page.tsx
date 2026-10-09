@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Images, Pencil, Trash2 } from "lucide-react";
 import { deleteGallery, saveGallery } from "@/lib/admin-content-actions";
@@ -193,14 +194,17 @@ export default async function GalleryAdmin({
               >
                 <div className="relative aspect-[4/3] overflow-hidden bg-[#f8f7f1]">
                   {item.media.publicUrl ? (
-                    <img
+                    <Image
                       src={item.media.publicUrl}
                       alt={
                         item.media.altText ||
                         item.title ||
                         "Gallery image"
                       }
-                      className="h-full w-full object-cover transition duration-300 hover:scale-[1.03]"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      unoptimized
+                      className="object-cover transition duration-300 hover:scale-[1.03]"
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center text-sm text-[#66746c]">

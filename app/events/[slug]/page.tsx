@@ -1,8 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, MapPin } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import Navbar from "@/components/Navbar";
+import EventGallery from "@/components/EventGallery";
 import { prisma } from "@/lib/prisma";
 
 function formatDate(date: Date | null) {
@@ -99,9 +101,12 @@ export default async function EventDetailPage({
           <div className="container py-12 sm:py-20">
             {event.coverMedia?.publicUrl && (
               <div className="overflow-hidden rounded-[2rem] bg-[#034d2a]">
-                <img
+                <Image
                   src={event.coverMedia.publicUrl}
                   alt={event.coverMedia.altText || event.title}
+                  width={1600}
+                  height={900}
+                  unoptimized
                   className="max-h-[620px] w-full object-cover"
                 />
               </div>
@@ -151,32 +156,18 @@ export default async function EventDetailPage({
               </aside>
             </div>
 
-            {galleryImages.length > 0 && (
-              <section className="mt-14">
-                <h2 className="text-2xl font-semibold">
-                  Event gallery
-                </h2>
-
-                <div className="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                  {galleryImages.map((item) => (
-                    <div
-                      key={item.id}
-                      className="overflow-hidden rounded-[1.5rem] bg-[#034d2a]"
-                    >
-                      <img
-                        src={item.media.publicUrl!}
-                        alt={
-                          item.media.altText ||
-                          item.title ||
-                          event.title
-                        }
-                        className="aspect-square h-full w-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+            <EventGallery
+              images={galleryImages.map((item) => ({
+                id: item.id,
+                url: item.media.publicUrl!,
+                alt:
+                  item.media.altText ||
+                  item.title ||
+                  event.title,
+                caption: item.media.caption,
+                title: item.title,
+              }))}
+            />
 
             <Link
               href="/events"
