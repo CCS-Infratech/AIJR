@@ -67,7 +67,7 @@ export default function Hero() {
             <motion.h1
               initial={{ opacity: 0, y: 35 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.85, delay: 0.1 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               className="mt-6 max-w-4xl text-[clamp(2.6rem,11vw,3.75rem)] font-bold leading-[0.96] tracking-[-0.055em] sm:mt-7 sm:text-6xl lg:text-[88px]"
             >
               Together we build
@@ -116,6 +116,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, x: 45, scale: 0.96 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
+            whileHover={{ y: -4 }}
             transition={{ duration: 1, delay: 0.25 }}
             className="relative mx-auto w-full max-w-[420px] lg:max-w-[480px]"
           >
@@ -147,14 +148,14 @@ export default function Hero() {
                 ease: "easeInOut",
               }}
             />
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-white/15 shadow-2xl shadow-[#034d2a]/40 sm:aspect-[4/5] sm:rounded-[2rem]">
+            <div className="group relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-white/20 bg-[#034d2a] shadow-2xl shadow-[#034d2a]/50 ring-1 ring-[#d7b765]/10 transition duration-500 hover:-translate-y-1 hover:ring-[#d7b765]/30 sm:aspect-[4/5] sm:rounded-[2rem]">
               <Image
                 src="/images/gallery/1.jpeg"
                 alt="AIJR community"
                 fill
                 priority
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 480px"
-                className="object-cover transition duration-700 hover:scale-105"
+                className="object-cover transition duration-1000 ease-out group-hover:scale-105"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
