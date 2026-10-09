@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import { DEFAULT_SITE_SETTINGS } from "@/lib/site-settings";
 import AIJRMarquee from "@/components/AIJRMarquee";
 import Gallery from "@/components/Gallery";
 
@@ -90,6 +91,44 @@ const benefits = [
 ];
 
 export default function Home() {
+  const [siteSettings, setSiteSettings] =
+    useState(DEFAULT_SITE_SETTINGS);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/site-settings", {
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load site settings.");
+        }
+
+        return response.json();
+      })
+      .then((result) => {
+        if (
+          !cancelled &&
+          result?.success &&
+          result?.data &&
+          typeof result.data === "object"
+        ) {
+          setSiteSettings({
+            ...DEFAULT_SITE_SETTINGS,
+            ...result.data,
+          });
+        }
+      })
+      .catch(() => {
+        // Keep the known-safe public defaults.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -732,7 +771,7 @@ export default function Home() {
                   </div>
                 ) : (
                   <form
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault();
 
                       setSubmitting(true);
@@ -740,27 +779,14 @@ export default function Home() {
 
                       const form = e.currentTarget;
 
-                      // ============================================================
-                      // FRONTEND SHOWCASE MODE
-                      // This currently simulates a successful submission so the
-                      // website can be demonstrated before official email access
-                      // and contact details are available.
-                      //
-                      // BACKEND IS READY TO RECONNECT LATER:
-                      // 1. Keep the existing app/api/membership/route.ts file.
-                      // 2. Restore the FormData/payload code below.
-                      // 3. Restore the fetch("/api/membership", ...) request.
-                      // 4. Configure SMTP credentials in .env.local.
-                      // ============================================================
-
-                      /*
                       const formData = new FormData(form);
 
                       const payload = {
                         name: String(formData.get("name") || ""),
+                        fatherName: String(formData.get("fatherName") || ""),
                         phone: String(formData.get("phone") || ""),
                         email: String(formData.get("email") || ""),
-                        city: String(formData.get("city") || ""),
+                        address: String(formData.get("address") || ""),
                         message: String(formData.get("message") || ""),
                       };
 
@@ -782,6 +808,7 @@ export default function Home() {
                         }
 
                         setSubmitted(true);
+                        setFormError("");
                         form.reset();
                       } catch (error) {
                         console.error("Membership form error:", error);
@@ -794,13 +821,6 @@ export default function Home() {
                       } finally {
                         setSubmitting(false);
                       }
-                      */
-
-                      setTimeout(() => {
-                        setSubmitting(false);
-                        setSubmitted(true);
-                        form.reset();
-                      }, 900);
                     }}
                     className="space-y-5"
                   >
@@ -840,6 +860,25 @@ export default function Home() {
                           name="name"
                           autoComplete="name"
                           placeholder="Your full name"
+                          className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="membership-father-name"
+                          className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
+                        >
+                          Father&apos;s Name
+                        </label>
+
+                        <input
+                          id="membership-father-name"
+                          required
+                          type="text"
+                          name="fatherName"
+                          autoComplete="name"
+                          placeholder="Father's full name"
                           className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                         />
                       </div>
@@ -886,18 +925,18 @@ export default function Home() {
 
                     <div>
                       <label
-                        htmlFor="membership-city"
+                        htmlFor="membership-address"
                         className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-[#66746c]"
                       >
-                        City
+                        Address
                       </label>
 
                       <input
-                        id="membership-city"
+                        id="membership-address"
                         type="text"
-                        name="city"
-                        autoComplete="address-level2"
-                        placeholder="Your city"
+                        name="address"
+                        autoComplete="street-address"
+                        placeholder="Your address"
                         className="w-full rounded-xl border border-[#dfe1d8] bg-white px-4 py-3.5 text-sm text-[#15231c] outline-none transition placeholder:text-[#66746c]/55 hover:border-[#056839]/30 focus:border-[#056839] focus:ring-4 focus:ring-[#056839]/10"
                       />
                     </div>
@@ -995,9 +1034,12 @@ export default function Home() {
                         Email
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-white/55">
-                        Official email will be added once confirmed.
-                      </p>
+                      <a
+                        href={`mailto:${siteSettings.email}`}
+                        className="mt-1 block text-sm leading-6 text-white/55 transition hover:text-[#d7b765]"
+                      >
+                        {siteSettings.email}
+                      </a>
                     </div>
                   </div>
 
@@ -1011,9 +1053,12 @@ export default function Home() {
                         Phone
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-white/55">
-                        Official contact number will be added once confirmed.
-                      </p>
+                      <a
+                        href={`tel:${siteSettings.phone.replace(/[^\d+]/g, "")}`}
+                        className="mt-1 block text-sm leading-6 text-white/55 transition hover:text-[#d7b765]"
+                      >
+                        {siteSettings.phone}
+                      </a>
                     </div>
                   </div>
 
@@ -1028,7 +1073,7 @@ export default function Home() {
                       </p>
 
                       <p className="mt-1 text-sm leading-6 text-white/55">
-                        India
+                        {siteSettings.address}
                       </p>
                     </div>
                   </div>
@@ -1081,26 +1126,13 @@ export default function Home() {
                   </div>
                 ) : (
                   <form
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault();
 
                       setContactSubmitting(true);
                       setContactError("");
 
                       const form = e.currentTarget;
-
-                      // ============================================================
-                      // FRONTEND SHOWCASE MODE
-                      // This currently simulates a successful message submission.
-                      //
-                      // BACKEND IS READY TO RECONNECT LATER:
-                      // 1. Keep the existing app/api/contact/route.ts file.
-                      // 2. Restore the FormData/payload code below.
-                      // 3. Restore the fetch("/api/contact", ...) request.
-                      // 4. Configure SMTP credentials in .env.local.
-                      // ============================================================
-
-                      /*
                       const formData = new FormData(form);
 
                       const payload = {
@@ -1140,13 +1172,6 @@ export default function Home() {
                       } finally {
                         setContactSubmitting(false);
                       }
-                      */
-
-                      setTimeout(() => {
-                        setContactSubmitting(false);
-                        setContactSent(true);
-                        form.reset();
-                      }, 900);
                     }}
                     className="space-y-5"
                   >
@@ -1283,25 +1308,63 @@ export default function Home() {
                 Connecting families, empowering individuals and building a
                 stronger community together.
               </p>
+
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                <a
+                  href={siteSettings.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow All India Jamat Rayeen on Facebook"
+                  title="Facebook"
+                  className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/65 transition duration-300 hover:-translate-y-0.5 hover:border-[#d7b765]/40 hover:bg-white/10 hover:text-[#d7b765]"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className="h-[18px] w-[18px] fill-current"
+                  >
+                    <path d="M24 12.07C24 5.397 18.603 0 11.93 0S0 5.397 0 12.07c0 6.025 4.388 11.002 10.125 11.93v-8.43H7.078v-3.5h3.047V9.406c0-3.007 1.792-4.675 4.533-4.675 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.492 0-1.955.925-1.955 1.875v2.25h3.329l-.533 3.5h-2.796V24C19.612 23.072 24 18.095 24 12.07Z" />
+                  </svg>
+                </a>
+
+                <a
+                  href={siteSettings.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow All India Jamat Rayeen on Instagram"
+                  title="Instagram"
+                  className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/65 transition duration-300 hover:-translate-y-0.5 hover:border-[#d7b765]/40 hover:bg-white/10 hover:text-[#d7b765]"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className="h-[18px] w-[18px] fill-none stroke-current"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4.25" />
+                    <circle cx="17.5" cy="6.5" r="1" className="fill-current stroke-none" />
+                  </svg>
+                </a>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {[
-                { label: "Home", href: "#home" },
-                { label: "About", href: "#about" },
-                { label: "Team", href: "#team" },
-                { label: "Events", href: "#events" },
-                { label: "Gallery", href: "#gallery" },
-                { label: "Contact", href: "#contact" },
-              ].map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="rounded-lg px-3 py-2 text-sm text-white/55 transition hover:bg-white/5 hover:text-white"
-                >
-                  {item.label}
-                </a>
-              ))}
+            <div className="flex items-center justify-start md:justify-end">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-3 shadow-xl shadow-black/10 backdrop-blur-sm transition duration-500 hover:border-[#d7b765]/30 hover:bg-white/[0.07]">
+                <div className="absolute inset-0 rounded-3xl bg-[#d7b765]/0 transition duration-500 group-hover:bg-[#d7b765]/5" />
+
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-white p-2 sm:h-24 sm:w-24">
+                  <Image
+                    src="/images/Logo.jpeg"
+                    alt="All India Jamat Rayeen logo"
+                    width={96}
+                    height={96}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
