@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -26,6 +26,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import { DEFAULT_SITE_SETTINGS } from "@/lib/site-settings";
 
 const events = [
   {
@@ -132,6 +133,44 @@ const objectives = [
 const presenceStates = ["Uttar Pradesh", "Bihar", "Madhya Pradesh", "Karnataka"];
 
 export default function Home() {
+  const [siteSettings, setSiteSettings] =
+    useState(DEFAULT_SITE_SETTINGS);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/site-settings", {
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load site settings.");
+        }
+
+        return response.json();
+      })
+      .then((result) => {
+        if (
+          !cancelled &&
+          result?.success &&
+          result?.data &&
+          typeof result.data === "object"
+        ) {
+          setSiteSettings({
+            ...DEFAULT_SITE_SETTINGS,
+            ...result.data,
+          });
+        }
+      })
+      .catch(() => {
+        // Keep the known-safe public defaults.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -574,7 +613,7 @@ export default function Home() {
                 </p>
 
                 <a
-                  href="https://rayeenshaadi.com/"
+                  href={siteSettings.rayeenShadiUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#d7b765] px-7 py-4 text-sm font-bold text-[#15231c] transition hover:bg-[#ead493]"
@@ -937,10 +976,10 @@ export default function Home() {
                       </p>
 
                       <a
-                        href="mailto:allindiajamiatrayeen@yahoo.com"
+                        href={`mailto:${siteSettings.email}`}
                         className="mt-1 block text-sm leading-6 text-[#66746c] transition hover:text-[#056839]"
                       >
-                        allindiajamiatrayeen@yahoo.com
+                        {siteSettings.email}
                       </a>
                     </div>
                   </div>
@@ -956,10 +995,10 @@ export default function Home() {
                       </p>
 
                       <a
-                        href="tel:+919919990421"
+                        href={`tel:${siteSettings.phone.replace(/[^\d+]/g, "")}`}
                         className="mt-1 block text-sm leading-6 text-[#66746c] transition hover:text-[#056839]"
                       >
-                        +91 99199 90421
+                        {siteSettings.phone}
                       </a>
                     </div>
                   </div>
@@ -975,7 +1014,7 @@ export default function Home() {
                       </p>
 
                       <p className="mt-1 text-sm leading-6 text-[#66746c]">
-                        India
+                        {siteSettings.address}
                       </p>
                     </div>
                   </div>
@@ -1204,7 +1243,7 @@ export default function Home() {
 
               <div className="mt-5 flex items-center gap-3">
                 <a
-                  href="https://www.facebook.com/share/1DfVWVoZgv/"
+                  href={siteSettings.facebookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Follow All India Jamiat Rayeen on Facebook"
@@ -1220,7 +1259,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="https://www.instagram.com/allindiajamiatrayeen?stkn=MTM3bTA1bm1oZDN2Nw=="
+                  href={siteSettings.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Follow All India Jamiat Rayeen on Instagram"

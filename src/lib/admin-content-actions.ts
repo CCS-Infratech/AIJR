@@ -268,4 +268,74 @@ export async function updateMembership(data: FormData) { await requireAdmin(); c
 export async function deleteMembership(data: FormData) { await requireAdmin(); const id=value(data,"id"); if(id) await prisma.membershipApplication.delete({where:{id}}).catch(()=>null); redirect("/admin/membership?deleted=1"); }
 export async function updateMessage(data: FormData) { await requireAdmin(); const id=value(data,"id"), status=value(data,"status"); if(id && Object.values(ContactMessageStatus).includes(status as ContactMessageStatus)) await prisma.contactMessage.update({where:{id},data:{status:status as ContactMessageStatus}}).catch(()=>null); redirect("/admin/messages?saved=1"); }
 export async function deleteMessage(data: FormData) { await requireAdmin(); const id=value(data,"id"); if(id) await prisma.contactMessage.delete({where:{id}}).catch(()=>null); redirect("/admin/messages?deleted=1"); }
-export async function saveSettings(data: FormData) { const user=await requireAdmin(); const entries=["phone","email","address","facebookUrl","instagramUrl","rayeenShadiUrl"]; for(const key of entries){const settingValue=value(data,key); await prisma.siteSetting.upsert({where:{key},update:{value:settingValue, valueType:"text",updatedById:user.id},create:{key,value:settingValue,valueType:"text",updatedById:user.id}});} redirect("/admin/settings?saved=1"); }
+export async function saveSettings(data: FormData) {
+  const user = await requireAdmin();
+
+  const phone = value(data, "phone");
+  const email = value(data, "email");
+  const address = value(data, "address");
+  const facebookUrl = value(data, "facebookUrl");
+  const instagramUrl = value(data, "instagramUrl");
+  const rayeenShadiUrl = value(data, "rayeenShadiUrl");
+
+  if (
+    !phone ||
+    phone.replace(/\D/g, "").length < 7 ||
+    phone.length > 40
+  ) {
+    redirect("/admin/settings?error=invalid-phone");
+  }
+
+  if (
+    !email ||
+    email.length > 254 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
+    redirect("/admin/settings?error=invalid-email");
+  }
+
+  if (!address || address.length > 300) {
+    redirect("/admin/settings?error=invalid");
+  }
+
+  const urls = [facebookUrl, instagramUrl, rayeenShadiUrl];
+
+  if (
+    urls.some(
+      (url) =>
+        !url ||
+        url.length > 2000 ||
+        !validUrl(url)
+    )
+  ) {
+    redirect("/admin/settings?error=invalid-url");
+  }
+
+  const entries = {
+    phone,
+    email,
+    address,
+    facebookUrl,
+    instagramUrl,
+    rayeenShadiUrl,
+  };
+
+  for (const [key, settingValue] of Object.entries(entries)) {
+    await prisma.siteSetting.upsert({
+      where: { key },
+      update: {
+        value: settingValue,
+        valueType: "text",
+        updatedById: user.id,
+      },
+      create: {
+        key,
+        value: settingValue,
+        valueType: "text",
+        updatedById: user.id,
+      },
+    });
+  }
+
+  redirect("/admin/settings?saved=1");
+}
