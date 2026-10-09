@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -102,17 +102,25 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-xl px-3.5 py-2.5 text-sm text-white/75 transition hover:bg-white/10 hover:text-white"
+                className="group relative rounded-xl px-3.5 py-2.5 text-sm text-white/75 transition duration-300 hover:bg-white/10 hover:text-white"
               >
                 {item.label}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-3.5 bottom-1.5 h-px origin-left scale-x-0 bg-[#d7b765] transition-transform duration-300 group-hover:scale-x-100"
+                />
               </Link>
             ))}
 
             <Link
               href="/#membership"
-              className="ml-3 rounded-full bg-[#d7b765] px-5 py-3 text-sm font-bold text-[#15231c] transition hover:-translate-y-0.5 hover:bg-[#ead493]"
+              className="group ml-3 inline-flex items-center gap-2 rounded-full bg-[#d7b765] px-5 py-3 text-sm font-bold text-[#15231c] shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#ead493] hover:shadow-xl"
             >
               Become a Member
+              <ArrowRight
+                size={15}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
             </Link>
           </nav>
 
@@ -149,18 +157,26 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-xl px-4 py-3.5 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+                  className="group flex items-center justify-between rounded-xl px-4 py-3.5 text-sm text-white/80 transition duration-300 hover:bg-white/10 hover:text-white"
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  <ArrowRight
+                    size={15}
+                    className="translate-x-0 opacity-0 transition duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+                  />
                 </Link>
               ))}
 
               <Link
                 href="/#membership"
                 onClick={() => setOpen(false)}
-                className="mt-2 block rounded-xl bg-[#d7b765] px-4 py-3.5 text-center text-sm font-bold text-[#15231c]"
+                className="group mt-2 flex items-center justify-center gap-2 rounded-xl bg-[#d7b765] px-4 py-3.5 text-sm font-bold text-[#15231c] transition duration-300 hover:bg-[#ead493]"
               >
                 Become a Member
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
               </Link>
             </motion.div>
           </>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
@@ -91,7 +92,7 @@ export default function Gallery() {
     <>
       <section
         id="gallery"
-        className="section overflow-hidden bg-white"
+        className="section aijr-section overflow-hidden bg-white"
       >
         <div className="container">
           {/* Section heading */}
@@ -117,16 +118,27 @@ export default function Gallery() {
                 </p>
               </div>
 
-              <div className="shrink-0">
+              <div className="flex shrink-0 items-center gap-3">
                 <span className="rounded-full border border-[#056839]/15 bg-[#056839]/5 px-4 py-2 text-xs font-semibold text-[#056839]">
                   {images.length} Community Moments
                 </span>
+
+                <Link
+                  href="/gallery"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#056839] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#034d2a]"
+                >
+                  View Gallery
+                  <ArrowRight
+                    size={14}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </Link>
               </div>
             </div>
           </motion.div>
 
           {/* Gallery grid */}
-          <div className="mt-14 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
+          <div className="aijr-gallery-grid mt-14">
             {images.map((src, index) => {
               const featured =
                 index === 0 ||
@@ -156,13 +168,11 @@ export default function Gallery() {
                     delay: Math.min(index * 0.04, 0.3),
                   }}
                   whileHover={{
-                    y: -6,
+                    y: -7,
+                    scale: 1.015,
+                    rotate: index % 2 === 0 ? -0.35 : 0.35,
                   }}
-                  className={`group relative overflow-hidden rounded-2xl bg-[#034d2a] text-left ${
-                    featured
-                      ? "col-span-2 aspect-[2/1]"
-                      : "aspect-square"
-                  }`}
+                  className="aijr-gallery-tile group relative overflow-hidden rounded-[1.35rem] bg-[#034d2a] text-left shadow-sm ring-1 ring-[#15231c]/5"
                   aria-label={`Open gallery image ${index + 1}`}
                 >
                   <Image
@@ -177,8 +187,15 @@ export default function Gallery() {
                     className="object-cover transition duration-700 group-hover:scale-110"
                   />
 
+                  {/* Image number */}
+                  <span className="absolute left-4 top-4 z-10 rounded-full border border-white/20 bg-black/20 px-2.5 py-1.5 text-[10px] font-bold tracking-[0.14em] text-white/80 backdrop-blur-md">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-60 transition duration-500 group-hover:opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#034d2a]/85 via-black/5 to-transparent opacity-50 transition duration-500 group-hover:opacity-100" />
+
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-[#d7b765] transition-transform duration-500 group-hover:scale-x-100" />
 
                   {/* Expand icon */}
                   <div className="absolute right-4 top-4 flex h-10 w-10 translate-y-2 items-center justify-center rounded-full border border-white/20 bg-black/20 text-white opacity-0 backdrop-blur-md transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">

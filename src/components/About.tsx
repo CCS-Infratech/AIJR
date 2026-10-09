@@ -26,7 +26,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="section overflow-hidden bg-[#f8f7f1]"
+      className="section aijr-section overflow-hidden bg-[#f8f7f1]"
     >
       <div className="container">
         {/* Main introduction */}
@@ -150,7 +150,7 @@ export default function About() {
                   delay: index * 0.1,
                 }}
                 whileHover={{ y: -7 }}
-                className="group rounded-3xl border border-[#e3e4dc] bg-white p-7 transition-shadow hover:shadow-xl hover:shadow-[#056839]/5"
+                className="aijr-premium-card group relative overflow-hidden rounded-3xl p-7 sm:p-8"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-bold text-[#d7b765]">
@@ -175,7 +175,7 @@ export default function About() {
         </div>
 
         {/* Highlight stats */}
-        <div className="mt-20 overflow-hidden rounded-[2rem] bg-[#056839]">
+        <div className="relative mt-20 overflow-hidden rounded-[2.25rem] bg-[#034d2a] shadow-2xl shadow-[#034d2a]/15">
           <div className="grid divide-y divide-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {[
               ["Community", "Connected across India"],
